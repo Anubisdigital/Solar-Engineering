@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ── -->
+  <title>Our Location — Solar Engineering Uganda | Kampala Office</title>
+  <meta name="description" content="Visit Solar Engineering Uganda at Anna Power Point Building, Nakasero Market Street, Kampala. View map, get directions, and find our contact details.">
+  <link rel="canonical" href="https://solarengineeringuganda.com/location.html">
+
+  <!-- ── OPEN GRAPH ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://solarengineeringuganda.com/location.html">
+  <meta property="og:title" content="Our Location — Solar Engineering Uganda">
+  <meta property="og:description" content="Anna Power Point Building, Nakasero Market Street, Kampala. Get directions to our office.">
+  <meta property="og:image" content="https://solarengineeringuganda.com/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    :root {
+      --green: #1e8f3e;
+      --green-dark: #146b2e;
+      --orange: #f7941d;
+      --orange-dark: #d97e0a;
+      --black: #0a0f0a;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e8e8e8;
+      --gray-400: #9e9e9e;
+      --text: #1a1a1a;
+      --text-muted: #5f6368;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .logo-text, .footer-logo {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── REVEAL (simplified for this page) ── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── HEADER (identical to index) ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 20px;
+      position: relative;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      z-index: 4;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 5;
+    }
+    .logo img { height: 44px; width: auto; }
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: 1px;
+      line-height: 1;
+      font-family: 'Baloo 2', cursive;
+    }
+    .logo-text span { color: var(--orange); }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    nav a {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--green);
+      transition: width 0.3s;
+    }
+    nav a:hover { color: var(--green); }
+    nav a:hover::after { width: 100%; }
+    nav a.active { color: var(--green); }
+    nav a.active::after { width: 100%; }
+
+    .mobile-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--green);
+      cursor: pointer;
+      padding: 4px;
+      position: relative;
+      z-index: 3;
+    }
+
+    /* Mobile drawer */
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      z-index: 1999;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-100%);
+      visibility: hidden;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.32s;
+      overflow: hidden;
+      padding: 0 0 20px 0;
+    }
+    .mobile-drawer.open {
+      transform: translateY(0);
+      visibility: visible;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--green);
+      cursor: pointer;
+      z-index: 1;
+    }
+    .mobile-nav {
+      list-style: none;
+      margin-top: 70px;
+      padding: 0 30px;
+    }
+    .mobile-nav li a {
+      display: block;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-200);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .mobile-nav li a:hover {
+      color: var(--green);
+      padding-left: 8px;
+    }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: linear-gradient(135deg, rgba(20,107,46,0.94) 0%, rgba(247,148,29,0.85) 100%),
+                  url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      text-align: center;
+      padding: 100px 0 70px;
+    }
+    .page-hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      margin-bottom: 18px;
+      color: var(--white);
+      font-family: 'Baloo 2', cursive;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    .page-hero p {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.9);
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── MAP SECTION ── */
+    .map-section {
+      padding: 80px 0;
+      background: var(--white);
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .section-title span { color: var(--green); }
+    .section-sub {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 44px;
+    }
+    .section-line {
+      width: 56px; height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+      margin-bottom: 16px;
+    }
+
+    #locationMap {
+      height: 500px;
+      width: 100%;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 32px;
+    }
+
+    .location-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .location-card {
+      background: var(--gray-100);
+      padding: 32px 28px;
+      border: 1px solid var(--gray-200);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .location-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .location-icon-circle {
+      width: 56px;
+      height: 56px;
+      background: var(--green);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+    }
+    .location-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .location-card p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .location-card a {
+      color: var(--green);
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .location-card a:hover { text-decoration: underline; }
+
+    .directions-box {
+      background: var(--black);
+      color: var(--white);
+      padding: 32px;
+      margin-top: 48px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      text-align: center;
+    }
+    .directions-box p {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.8);
+    }
+    .btn-direction {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      background: var(--green);
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.3px;
+      font-family: 'Barlow', sans-serif;
+    }
+    .btn-direction:hover {
+      background: var(--green-dark);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER (simplified, same style) ── */
+    footer {
+      background: var(--black);
+      color: var(--white);
+      padding: 48px 0 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 40px;
+    }
+    .footer-col h4 {
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer-col p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+    .footer-col a {
+      display: block;
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.55);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover { color: var(--white); }
+    .footer-contact-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 0.86rem;
+      color: rgba(255,255,255,0.55);
+    }
+    .footer-contact-row i { color: var(--green); margin-top: 2px; flex-shrink: 0; }
+    .footer-bottom {
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      text-align: center;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.28);
+    }
+    .footer-logo {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: 1px;
+      margin-bottom: 14px;
+      display: block;
+    }
+    .footer-logo span { color: var(--orange); }
+
+    .whatsapp-float {
+      position: fixed;
+      bottom: 80px;
+      right: 24px;
+      width: 54px;
+      height: 54px;
+      background: #25d366;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.4);
+      z-index: 490;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .whatsapp-float:hover { transform: scale(1.1); }
+    .scroll-top {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 44px;
+      height: 44px;
+      background: var(--green);
+      color: var(--white);
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+      z-index: 491;
+    }
+    .scroll-top.show { opacity: 1; visibility: visible; }
+    .scroll-top:hover { transform: translateY(-3px); }
+
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .mobile-btn { display: block; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .page-hero { padding: 80px 0 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a class="whatsapp-float" href="https://wa.me/256708755776?text=Hello%20Solar%20Engineering%20Uganda%2C%20I%20would%20like%20directions%20to%20your%20office." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="index.html" class="logo">
+          <img src="logo.png" alt="Solar Engineering Uganda">
+          <span class="logo-text">SOLAR <span>ENGINEERING</span></span>
+        </a>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#gallery">Projects</a>
+        <a href="index.html#posts">Blog</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="location.html" class="active">Location</a>
+      </nav>
+      <button class="mobile-btn" id="mobileOpen" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <ul class="mobile-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#gallery">Projects</a></li>
+    <li><a href="index.html#posts">Blog</a></li>
+    <li><a href="index.html#contact">Contact</a></li>
+    <li><a href="location.html">Location</a></li>
+  </ul>
+</div>
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="container">
+    <h1>Our Location</h1>
+    <p>Visit our office in the heart of Kampala. We're ready to help you with all your solar energy needs.</p>
+  </div>
+</section>
+
+<!-- MAP + DETAILS -->
+<section class="map-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Find Us in <span>Kampala</span></h2>
+      <p class="section-sub">Anna Power Point Building, Nakasero Market Street. Easy access from the city center.</p>
+    </div>
+
+    <div id="locationMap"></div>
+
+    <div class="location-details-grid reveal">
+      <div class="location-card">
+        <div class="location-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+        <h3>Office Address</h3>
+        <p>Anna Power Point Building<br>Nakasero Market Street<br>Kampala, Uganda</p>
+      </div>
+      <div class="location-card">
+        <div class="location-icon-circle"><i class="fas fa-clock"></i></div>
+        <h3>Working Hours</h3>
+        <p>Monday – Saturday<br>8:00 AM – 7:00 PM<br>Sunday: Closed</p>
+      </div>
+      <div class="location-card">
+        <div class="location-icon-circle"><i class="fas fa-phone-alt"></i></div>
+        <h3>Call Us</h3>
+        <p>
+          <a href="tel:+256708755776">+256 708 755 776</a><br>
+          <a href="tel:+256771557508">+256 771 557 508</a>
+        </p>
+      </div>
+      <div class="location-card">
+        <div class="location-icon-circle"><i class="fas fa-envelope"></i></div>
+        <h3>Email</h3>
+        <p><a href="mailto:Solarengineeringug@gmail.com">Solarengineeringug@gmail.com</a></p>
+      </div>
+    </div>
+
+    <div class="directions-box reveal">
+      <p><i class="fas fa-car"></i> Ready to visit? Get turn-by-turn directions via Google Maps.</p>
+      <a href="https://www.google.com/maps/search/?api=1&query=Anna+Power+Point+Building+Nakasero+Kampala" target="_blank" rel="noopener" class="btn-direction">
+        <i class="fas fa-directions"></i> Get Directions
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-logo">SOLAR <span>ENGINEERING</span></span>
+        <p>Reliable, affordable solar energy solutions across Uganda.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a href="index.html">Home</a>
+        <a href="index.html#gallery">Projects</a>
+        <a href="index.html#contact">Contact</a>
+        <a href="location.html">Location</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Anna Power Point Building, Nakasero Market Street, Kampala</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-phone"></i>
+          <span>+256 708 755 776</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-envelope"></i>
+          <span>Solarengineeringug@gmail.com</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Solar Engineering Uganda. All rights reserved. Powering Your Tomorrow — Kampala, Uganda.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- LEAFLET -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<script>
+  // ── MOBILE MENU ──
+  var mobileOpen   = document.getElementById('mobileOpen');
+  var mobileClose  = document.getElementById('mobileClose');
+  var mobileDrawer = document.getElementById('mobileDrawer');
+
+  function openMenu()  { mobileDrawer.classList.add('open'); }
+  function closeMenu() { mobileDrawer.classList.remove('open'); }
+
+  mobileOpen.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+
+  document.addEventListener('click', function(e) {
+    if (!mobileDrawer.contains(e.target) && !mobileOpen.contains(e.target)) {
+      closeMenu();
+    }
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
+
+  // ── SCROLL TOP ──
+  var scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() {
+    scrollTopBtn.classList.toggle('show', window.scrollY > 400);
+  });
+  scrollTopBtn.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ── SCROLL REVEAL ──
+  function revealElements() {
+    document.querySelectorAll('.reveal:not(.visible)').forEach(function(el) {
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+        el.classList.add('visible');
+      }
+    });
+  }
+  window.addEventListener('scroll', revealElements, { passive: true });
+  revealElements();
+
+  // ── MAP ──
+  document.addEventListener('DOMContentLoaded', function() {
+    var mapEl = document.getElementById('locationMap');
+    if (mapEl) {
+      var lat = 0.3163, lng = 32.5822;
+      var map = L.map('locationMap').setView([lat, lng], 17);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }).addTo(map);
+      L.marker([lat, lng]).addTo(map)
+        .bindPopup('<strong>Solar Engineering Uganda</strong><br>Anna Power Point Building<br>Nakasero Market Street, Kampala')
+        .openPopup();
+    }
+  });
+</script>
+</body>
+</html>
