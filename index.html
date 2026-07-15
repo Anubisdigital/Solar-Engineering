@@ -1,0 +1,1897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- ── SEO ── -->
+  <title>Solar Engineering Uganda — Solar Power, Battery Storage & CCTV | Kampala</title>
+  <meta name="description" content="Solar Engineering Uganda — solar system design, installation & maintenance for homes, businesses, farms, schools and industry across Uganda. Call +256 708 755 776.">
+  <link rel="canonical" href="https://solarengineeringuganda.com/">
+
+  <!-- ── OPEN GRAPH ── -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://solarengineeringuganda.com/">
+  <meta property="og:title" content="Solar Engineering Uganda — Powering Your Tomorrow">
+  <meta property="og:description" content="Reliable, affordable solar energy solutions for homes, businesses and industry across Uganda.">
+  <meta property="og:image" content="https://solarengineeringuganda.com/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- ── SCHEMA ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HomeAndConstructionBusiness",
+    "name": "Solar Engineering Uganda",
+    "url": "https://solarengineeringuganda.com/",
+    "logo": "https://solarengineeringuganda.com/logo.png",
+    "description": "Solar system design, supply, installation and maintenance for homes, businesses, farms, schools, hospitals and industry across Uganda.",
+    "address": {"@type":"PostalAddress","streetAddress":"Anna Power Point Building, Nakasero Market Street","addressLocality":"Kampala","addressCountry":"UG"},
+    "telephone": "+256708755776",
+    "email": "Solarengineeringug@gmail.com",
+    "areaServed": [{"@type":"Country","name":"Uganda"}],
+    "openingHoursSpecification": [{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"opens":"08:00","closes":"19:00"}],
+    "sameAs": []
+  }
+  </script>
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+  <style>
+    :root {
+      --green: #1e8f3e;
+      --green-dark: #146b2e;
+      --orange: #f7941d;
+      --orange-dark: #d97e0a;
+      --black: #0a0f0a;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e8e8e8;
+      --gray-400: #9e9e9e;
+      --text: #1a1a1a;
+      --text-muted: #5f6368;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .section-title, .logo-text, .footer-logo {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+
+    /* ── REVEAL ── */
+    .reveal { opacity: 0; transform: translateY(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(36px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ── ANNOUNCEMENT BANNER ── */
+    .announcement-banner {
+      display: none;
+      padding: 12px 24px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+      position: relative;
+      gap: 12px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .announcement-banner.show { display: flex; }
+    .announcement-banner.info    { background: #e7f4ec; color: var(--green-dark); }
+    .announcement-banner.success { background: #e7f4ec; color: var(--green-dark); }
+    .announcement-banner.warning { background: #fef3cd; color: #856404; }
+    .announcement-banner.promo   { background: var(--orange); color: #fff; }
+    .banner-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      background: rgba(0,0,0,0.12);
+      color: inherit;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.3px;
+    }
+    .banner-close {
+      position: absolute;
+      right: 16px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+      opacity: 0.6;
+      font-size: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 20px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo img { height: 44px; width: auto; }
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: 1px;
+      line-height: 1;
+      font-family: 'Baloo 2', cursive;
+    }
+    .logo-text span { color: var(--orange); }
+
+    /* Services dropdown button */
+    .services-dropdown-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--green);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: none;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .services-dropdown-btn:hover { background: var(--green-dark); }
+    .services-dropdown-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+    .services-dropdown-btn.open i { transform: rotate(180deg); }
+
+    .services-menu {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #fff;
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-lg);
+      min-width: 260px;
+      z-index: 200;
+      padding: 12px 0;
+    }
+    .services-menu.open { display: block; }
+    .services-menu a {
+      display: block;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .services-menu a:hover { background: var(--gray-100); color: var(--green); }
+
+    /* Main nav */
+    nav { display: flex; align-items: center; gap: 28px; }
+    nav a {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--green);
+      transition: width 0.3s;
+    }
+    nav a:hover { color: var(--green); }
+    nav a:hover::after { width: 100%; }
+    nav a.active { color: var(--green); }
+    nav a.active::after { width: 100%; }
+
+    /* ── MOBILE MENU (top slide) ── */
+    .mobile-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--green);
+      cursor: pointer;
+      padding: 4px;
+    }
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      z-index: 1999;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-100%);
+      visibility: hidden;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1), visibility 0s linear 0.32s;
+      overflow: hidden;
+      padding: 0 0 20px 0;
+    }
+    .mobile-drawer.open {
+      transform: translateY(0);
+      visibility: visible;
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+    }
+    .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--green);
+      cursor: pointer;
+      z-index: 1;
+    }
+    .mobile-nav {
+      list-style: none;
+      margin-top: 70px;
+      padding: 0 30px;
+    }
+    .mobile-nav li a {
+      display: block;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-200);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .mobile-nav li a:hover {
+      color: var(--green);
+      padding-left: 8px;
+    }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+    .section-title span { color: var(--green); }
+    .section-sub {
+      font-size: 0.97rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      line-height: 1.7;
+      margin-bottom: 44px;
+    }
+    .section-line {
+      width: 56px; height: 3px;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+      margin-bottom: 16px;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 0 80px;
+      background: linear-gradient(135deg, rgba(20,107,46,0.94) 0%, rgba(247,148,29,0.85) 100%),
+                  url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+      text-align: center;
+    }
+    .hero-content { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .hero-tag {
+      display: inline-block;
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 2px;
+      padding: 5px 14px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      margin-bottom: 24px;
+      color: var(--white);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-family: 'Baloo 2', cursive;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 40px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.95);
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: var(--white);
+      color: var(--green-dark);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      border: none;
+      font-family: 'Barlow', sans-serif;
+    }
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      background: transparent;
+      color: var(--white);
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      border: 2px solid rgba(255,255,255,0.45);
+      letter-spacing: 0.3px;
+      transition: border-color 0.2s, background 0.2s, transform 0.2s;
+      cursor: pointer;
+      font-family: 'Barlow', sans-serif;
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .btn-hero-secondary:hover { border-color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.08); transform: translateY(-2px); }
+
+    /* ── FEATURE STRIP ── */
+    .feature-strip-section { padding: 60px 0; background: var(--white); }
+    .feature-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .feature-item {
+      padding: 28px 16px;
+      text-align: center;
+      border-right: 1px solid var(--gray-200);
+      transition: background 0.2s;
+    }
+    .feature-item:last-child { border-right: none; }
+    .feature-item:hover { background: var(--gray-100); }
+    .feature-icon { font-size: 2rem; color: var(--green); margin-bottom: 12px; }
+    .feature-item h4 { font-family: 'Baloo 2', cursive; font-weight: 700; font-size: 1rem; color: var(--text); margin-bottom: 6px; }
+    .feature-item p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* ── CTA STRIP ── */
+    .cta-strip { background: var(--black); padding: 40px 0; }
+    .cta-strip-inner { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .cta-strip p { color: rgba(255,255,255,0.7); font-size: 1rem; font-weight: 500; }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .btn-cta-green  { background: var(--green);  color: #fff; }
+    .btn-cta-orange { background: var(--orange); color: #fff; }
+    .btn-cta-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); }
+    .btn-cta-green:hover  { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-cta-orange:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .btn-cta-outline:hover { border-color: #fff; }
+
+    /* ── LOGOS MARQUEE ── */
+    .logos-section { padding: 48px 0; background: var(--gray-100); border-bottom: 1px solid var(--gray-200); overflow: hidden; }
+    .logos-label {
+      text-align: center;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--gray-400);
+      margin-bottom: 28px;
+    }
+    .logos-marquee {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+    }
+    .logos-track {
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      animation: logos-scroll 25s linear infinite;
+      width: max-content;
+    }
+    .logos-marquee:hover .logos-track { animation-play-state: paused; }
+    @keyframes logos-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .logo-partner { height: 45px; width: auto; max-width: 130px; object-fit: contain; }
+
+    /* ── BLOG POSTS ── */
+    .posts-section { padding: 80px 0; background: var(--gray-100); }
+    .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .post-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      padding: 28px;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+    }
+    .post-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .post-type-tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      margin-bottom: 12px;
+      background: rgba(30,143,62,0.1);
+      color: var(--green);
+    }
+    .post-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 10px; color: var(--text); line-height: 1.3; }
+    .post-body { font-size: 0.9rem; color: var(--text-muted); line-height: 1.65; }
+    .see-more-btn { background: none; border: none; color: var(--green); font-weight: 600; font-size: 0.86rem; cursor: pointer; padding: 0; margin-top: 4px; font-family: 'Barlow', sans-serif; }
+    .post-date { font-size: 0.78rem; color: var(--gray-400); margin-top: 14px; border-top: 1px solid var(--gray-200); padding-top: 10px; }
+    .posts-empty { text-align: center; padding: 50px 20px; color: var(--text-muted); font-size: 0.95rem; }
+
+    /* ── GALLERY ── */
+    .gallery-section { padding: 80px 0; background: var(--white); }
+    .category-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 36px; }
+    .cat-btn {
+      padding: 7px 16px;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .cat-btn:hover, .cat-btn.active { background: var(--green); color: var(--white); border-color: var(--green); }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .gallery-card { border: 1px solid var(--gray-200); overflow: hidden; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; cursor: pointer; }
+    .gallery-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .gallery-img-wrap { position: relative; height: 240px; overflow: hidden; background: var(--gray-100); }
+    .gallery-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; display: block; }
+    .gallery-card:hover .gallery-img-wrap img { transform: scale(1.06); }
+    .gallery-price {
+      position: absolute;
+      bottom: 12px; right: 12px;
+      background: var(--white);
+      color: var(--green);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border: 1px solid var(--green);
+      font-family: 'Barlow Condensed', sans-serif;
+    }
+    .gallery-info { padding: 20px; }
+    .gallery-cat { display: inline-block; font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green); margin-bottom: 6px; }
+    .gallery-info h3 { font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+    .gallery-desc { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+    .gallery-desc-text { display: inline; }
+    .gallery-action { display: block; margin-top: 14px; padding: 10px 0; background: var(--green); color: var(--white); text-align: center; font-weight: 600; font-size: 0.86rem; text-decoration: none; transition: background 0.2s; }
+    .gallery-action:hover { background: var(--green-dark); }
+    .gallery-loading, .gallery-empty { grid-column: 1/-1; text-align: center; padding: 60px; color: var(--text-muted); }
+    .spinner {
+      width: 36px; height: 36px;
+      border: 3px solid var(--gray-200);
+      border-top-color: var(--green);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── LIGHTBOX ── */
+    .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 9000; align-items: center; justify-content: center; padding: 20px; }
+    .lightbox.open { display: flex; }
+    .lightbox-inner { background: var(--white); max-width: 760px; width: 100%; max-height: 90vh; overflow-y: auto; position: relative; }
+    .lightbox-img { width: 100%; max-height: 420px; object-fit: cover; display: block; }
+    .lightbox-body { padding: 28px; }
+    .lightbox-body h3 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+    .lightbox-body p { font-size: 0.92rem; color: var(--text-muted); line-height: 1.65; margin-bottom: 16px; }
+    .lightbox-price { display: inline-block; background: var(--orange); color: var(--white); font-weight: 700; font-size: 1rem; padding: 5px 14px; margin-bottom: 18px; font-family: 'Barlow Condensed', sans-serif; }
+    .lightbox-close { position: absolute; top: 14px; right: 14px; width: 34px; height: 34px; background: var(--black); color: var(--white); border: none; cursor: pointer; font-size: 0.95rem; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+    .lightbox-close:hover { background: var(--green); }
+    .lightbox-quote { display: block; background: var(--green); color: var(--white); text-align: center; padding: 12px; font-weight: 700; text-decoration: none; transition: background 0.2s; }
+    .lightbox-quote:hover { background: var(--green-dark); }
+
+    /* ── ABOUT ── */
+    .about-section { padding: 80px 0; background: var(--black); color: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-section .section-title { color: var(--white); }
+    .about-section .section-sub { color: rgba(255,255,255,0.6); }
+    .about-text p { color: rgba(255,255,255,0.72); line-height: 1.75; margin-bottom: 20px; font-size: 0.95rem; }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 40px; background: rgba(255,255,255,0.06); }
+    .stat-box { padding: 28px 20px; text-align: center; background: var(--black); border: 1px solid rgba(255,255,255,0.07); transition: background 0.25s; }
+    .stat-box:hover { background: rgba(30,143,62,0.18); }
+    .stat-num { font-family: 'Barlow Condensed', sans-serif; font-size: 2.8rem; font-weight: 800; color: var(--orange); line-height: 1; margin-bottom: 6px; }
+    .stat-lbl { font-size: 0.78rem; color: rgba(255,255,255,0.45); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .about-image img { width: 100%; max-width: 440px; filter: drop-shadow(0 20px 40px rgba(30,143,62,0.2)); }
+
+    /* ── CASE STUDIES ── */
+    .cases-section { padding: 80px 0; background: var(--gray-100); }
+    .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .case-card { background: var(--white); border: 1px solid var(--gray-200); overflow: hidden; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+    .case-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .case-card-img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .case-card-body { padding: 22px; }
+    .case-cat { font-family: 'Barlow Condensed', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--green); margin-bottom: 6px; display: block; }
+    .case-card-body h3 { font-size: 1.05rem; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+    .case-card-body p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; }
+    .case-result { margin-top: 12px; padding: 8px 12px; background: rgba(247,148,29,0.1); border-left: 3px solid var(--orange); font-size: 0.82rem; font-weight: 600; color: var(--orange-dark); display: flex; align-items: center; gap: 6px; }
+    .case-meta { display: flex; gap: 12px; font-size: 0.76rem; color: var(--gray-400); margin-top: 10px; }
+    .cases-empty { text-align: center; padding: 40px; color: var(--text-muted); }
+
+    /* ── SERVICES ── */
+    .services-section { padding: 80px 0; background: var(--white); }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .service-card { border: 1px solid var(--gray-200); overflow: hidden; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; background: #fff; }
+    .service-card:hover { border-color: var(--green); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .service-img { width: 100%; height: 180px; overflow: hidden; background: #eef5f0; display: flex; align-items: center; justify-content: center; }
+    .service-img img { width: 100%; height: 100%; object-fit: cover; }
+    .service-icon-placeholder { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; background: rgba(30,143,62,0.1); color: var(--green); font-size: 1.6rem; }
+    .service-body { padding: 24px 28px; flex: 1; display: flex; flex-direction: column; align-items: flex-start; }
+    .service-body h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+    .service-body p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.65; flex: 1; }
+
+    /* ── CATEGORIES ── */
+    .categories-section { padding: 80px 0; background: var(--gray-100); }
+    .categories-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2px; background: var(--gray-200); }
+    .cat-card { background: var(--white); padding: 32px 28px; transition: background 0.25s, transform 0.25s; cursor: pointer; text-decoration: none; color: inherit; display: block; }
+    .cat-card:hover { background: var(--green); }
+    .cat-card:hover h3, .cat-card:hover p, .cat-card:hover .cat-card-link { color: var(--white); }
+    .cat-card:hover .cat-icon { color: rgba(255,255,255,0.7); }
+    .cat-icon { font-size: 2rem; color: var(--green); margin-bottom: 14px; transition: color 0.25s; display: block; }
+    .cat-card h3 { font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 8px; transition: color 0.25s; }
+    .cat-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; transition: color 0.25s; }
+    .cat-card-link { font-size: 0.86rem; font-weight: 700; color: var(--green); transition: color 0.25s; }
+
+    /* ── WHY SWITCH ── */
+    .switch-section { padding: 80px 0; background: var(--white); }
+    .switch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .switch-image img { width: 100%; max-width: 500px; }
+    .switch-content h3 { font-size: 1.6rem; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+    .switch-content p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 24px; }
+    .switch-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .switch-list li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; color: var(--text); }
+    .switch-list i { color: var(--green); font-size: 1.1rem; }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { padding: 80px 0; background: var(--gray-100); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+    .testi-card { border: 1px solid var(--gray-200); padding: 28px; background: #fff; transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s; }
+    .testi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .testi-stars { color: #fbbc05; font-size: 1rem; margin-bottom: 12px; letter-spacing: 2px; }
+    .testi-text { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; font-style: italic; margin-bottom: 18px; }
+    .testi-text::before { content: '"'; font-size: 2rem; color: var(--green); line-height: 0; vertical-align: -12px; margin-right: 4px; }
+    .testi-author { display: flex; align-items: center; gap: 12px; border-top: 1px solid var(--gray-200); padding-top: 16px; }
+    .testi-photo { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; background: var(--gray-200); flex-shrink: 0; }
+    .testi-photo-placeholder { width: 42px; height: 42px; border-radius: 50%; background: var(--green); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1rem; flex-shrink: 0; }
+    .testi-name { font-weight: 700; font-size: 0.92rem; color: var(--text); }
+    .testi-role { font-size: 0.78rem; color: var(--text-muted); }
+    .testi-service { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; background: rgba(30,143,62,0.08); color: var(--green); padding: 2px 8px; margin-top: 3px; }
+    .testi-empty { text-align: center; padding: 40px; color: var(--text-muted); }
+
+    /* ── TEAM ── */
+    .team-section { padding: 80px 0; background: var(--black); color: var(--white); }
+    .team-section .section-title { color: var(--white); }
+    .team-section .section-sub { color: rgba(255,255,255,0.6); }
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 24px; }
+    .team-card { background: #14181a; border: 1px solid rgba(255,255,255,0.07); padding: 28px 20px; text-align: center; transition: border-color 0.25s, transform 0.25s; }
+    .team-card:hover { border-color: var(--green); transform: translateY(-3px); }
+    .team-photo { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 14px; display: block; border: 2px solid var(--green); }
+    .team-initials { width: 80px; height: 80px; border-radius: 50%; background: var(--green); color: var(--white); display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; font-weight: 800; margin: 0 auto 14px; }
+    .team-card-name { font-family: 'Barlow Condensed', sans-serif; font-size: 1.15rem; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+    .team-card-role { font-size: 0.8rem; color: var(--orange); font-weight: 600; margin-bottom: 10px; }
+    .team-card-bio { font-size: 0.82rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ── CERTIFICATIONS ── */
+    .certs-section { padding: 48px 0; background: var(--gray-100); border-top: 1px solid var(--gray-200); }
+    .certs-label { text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 24px; }
+    .certs-track { display: flex; align-items: center; justify-content: center; gap: 32px; flex-wrap: wrap; }
+    .cert-item { display: flex; align-items: center; gap: 10px; font-size: 0.86rem; font-weight: 600; color: var(--text-muted); }
+    .cert-img { height: 36px; width: auto; object-fit: contain; }
+    .cert-icon { font-size: 1.2rem; color: var(--green); }
+
+    /* ── MAP ── */
+    .map-section { padding: 80px 0; background: var(--white); }
+    #map { height: 400px; width: 100%; border: 1px solid var(--gray-200); }
+    .map-directions-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 10px 20px; background: var(--green); color: var(--white); font-weight: 600; font-size: 0.9rem; text-decoration: none; transition: background 0.2s; }
+    .map-directions-link:hover { background: var(--green-dark); }
+
+    /* ── CONTACT ── */
+    .unified-contact { padding: 80px 0; background: var(--black); color: var(--white); }
+    .unified-contact .section-title { color: var(--white); }
+    .unified-contact .section-sub { color: rgba(255,255,255,0.55); }
+    .contact-info-block { display: flex; flex-wrap: wrap; gap: 24px; margin-bottom: 48px; }
+    .contact-info-item { flex: 1 1 200px; display: flex; align-items: flex-start; gap: 12px; }
+    .contact-info-icon-circle { width: 44px; height: 44px; background: var(--green); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+    .contact-info-text strong { display: block; font-family: 'Baloo 2', cursive; font-size: 0.95rem; margin-bottom: 2px; color: var(--white); }
+    .contact-info-text span, .contact-info-text a { font-size: 0.88rem; color: rgba(255,255,255,0.6); text-decoration: none; }
+    .contact-info-text a:hover { color: var(--white); }
+    .contact-form-card { background: #14181a; border: 1px solid rgba(255,255,255,0.08); padding: 36px; max-width: 700px; margin: 0 auto; }
+    .contact-form-title { font-family: 'Baloo 2', cursive; font-size: 1.4rem; font-weight: 700; color: var(--white); margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
+    .contact-form-title i { color: var(--orange); }
+    .form-field { margin-bottom: 16px; }
+    .form-field label { display: block; font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.45); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-field input, .form-field select, .form-field textarea { width: 100%; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: var(--white); font-family: 'Barlow', sans-serif; font-size: 0.9rem; padding: 10px 14px; outline: none; transition: border-color 0.2s; -webkit-appearance: none; }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus { border-color: var(--green); }
+    .form-field select option { background: #14181a; }
+    .form-field textarea { resize: vertical; min-height: 100px; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-status { font-size: 0.82rem; padding: 8px 12px; margin-top: 10px; display: none; }
+    .form-status.show { display: block; }
+    .form-status.success { background: rgba(30,143,62,0.15); color: #4ade80; border: 1px solid rgba(30,143,62,0.25); }
+    .form-status.error   { background: rgba(234,67,53,0.15); color: #ea4335; border: 1px solid rgba(234,67,53,0.2); }
+    .form-spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.2); border-top-color: #fff; border-radius: 50%; animation: spin 0.65s linear infinite; vertical-align: middle; margin-left: 6px; display: none; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-col h4 { font-size: 0.76rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer-col p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+    .footer-col a { display: block; font-size: 0.88rem; color: rgba(255,255,255,0.55); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-contact-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.86rem; color: rgba(255,255,255,0.55); }
+    .footer-contact-row i { color: var(--green); margin-top: 2px; flex-shrink: 0; }
+    .footer-bottom { padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.28); }
+    .footer-logo { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: var(--white); letter-spacing: 1px; margin-bottom: 14px; display: block; }
+    .footer-logo span { color: var(--orange); }
+
+    /* Storyset attribution */
+    .storyset-attribution {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #059620;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .storyset-attribution:hover { color: var(--green); }
+    .storyset-attribution img { height: 18px; width: auto; }
+
+    /* ── WHATSAPP FLOAT ── */
+    .whatsapp-float { position: fixed; bottom: 80px; right: 24px; width: 54px; height: 54px; background: #25d366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 16px rgba(37,211,102,0.4); z-index: 490; transition: transform 0.2s, box-shadow 0.2s; }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+
+    /* ── SCROLL TOP ── */
+    .scroll-top { position: fixed; bottom: 24px; right: 24px; width: 44px; height: 44px; background: var(--green); color: var(--white); border: none; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s, transform 0.2s; z-index: 491; }
+    .scroll-top.show { opacity: 1; visibility: visible; }
+    .scroll-top:hover { transform: translateY(-3px); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .switch-grid { grid-template-columns: 1fr; }
+      .feature-strip { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      nav, .services-dropdown-btn { display: none; }
+      .mobile-btn { display: block; }
+      .hero { padding: 80px 0 60px; }
+      .hero h1 { font-size: 2.4rem; }
+      .hero p { font-size: 1.05rem; }
+      .hero-btns { flex-direction: column; align-items: center; }
+      .about-grid { grid-template-columns: 1fr; gap: 40px; }
+      .about-image { display: none; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .cta-strip-inner { flex-direction: column; text-align: center; }
+      section { padding: 60px 0; }
+      .feature-strip { grid-template-columns: 1fr 1fr; }
+      .switch-grid { grid-template-columns: 1fr; }
+      .switch-list { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 480px) {
+      .hero { padding: 60px 0 50px; }
+      .hero h1 { font-size: 2rem; }
+      .stats-row { grid-template-columns: 1fr; }
+      .gallery-grid, .posts-grid, .services-grid, .testimonials-grid, .cases-grid { grid-template-columns: 1fr; }
+      .btn-hero-primary, .btn-hero-secondary { width: 100%; justify-content: center; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .feature-strip { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a class="whatsapp-float" href="https://wa.me/256708755776?text=Hello%20Solar%20Engineering%20Uganda%2C%20I%20would%20like%20a%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- SCROLL TOP -->
+<button class="scroll-top" id="scrollTop" aria-label="Scroll to top">
+  <i class="fas fa-chevron-up"></i>
+</button>
+
+<!-- ANNOUNCEMENT BANNER -->
+<div class="announcement-banner" id="announcementBanner">
+  <span id="bannerMsg"></span>
+  <a class="banner-cta" id="bannerCtaBtn" href="#" style="display:none;"></a>
+  <button class="banner-close" id="bannerClose" aria-label="Close"><i class="fas fa-times"></i></button>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="index.html" class="logo">
+          <img src="logo.png" alt="Solar Engineering Uganda">
+        </a>
+        <div class="services-dropdown-btn" id="servicesDropdownBtn">
+          Services <i class="fas fa-chevron-down"></i>
+          <div class="services-menu" id="servicesMenu">
+            <a href="#svc-installation">Solar System Design & Installation</a>
+            <a href="#svc-battery">Lithium Battery & Inverter</a>
+            <a href="#svc-pumping">Solar Water Pumping</a>
+            <a href="#svc-lighting">Solar Street Lighting</a>
+            <a href="#svc-cctv">CCTV & Security</a>
+            <a href="#svc-industrial">Industrial & Agricultural</a>
+            <a href="#svc-maintenance">Maintenance & Support</a>
+          </div>
+        </div>
+      </div>
+      <nav>
+        <a href="index.html" class="active">Home</a>
+        <a href="#gallery">Projects</a>
+        <a href="#posts">Blog</a>
+        <a href="contact.html">Contact</a>
+        <a href="location.html">Location</a>
+      </nav>
+      <button class="mobile-btn" id="mobileOpen" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE MENU (slides from top) -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <ul class="mobile-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#gallery">Projects</a></li>
+    <li><a href="#posts">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="location.html">Location</a></li>
+  </ul>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content">
+      <span class="hero-tag">Powering Your Tomorrow</span>
+      <h1>SOLAR POWER.<br>BATTERY STORAGE &amp; SECURITY.</h1>
+      <p>Uganda's trusted solar engineers. Reliable, affordable solar solutions for homes, businesses, farms, schools and industry across the country.</p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-hero-primary"><i class="fas fa-envelope"></i> Get In Touch</a>
+        <a href="tel:+256708755776" class="btn-hero-secondary"><i class="fas fa-phone-alt"></i> Call Us Now</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG POSTS -->
+<section class="posts-section" id="posts">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">From The <span>Blog</span></h2>
+      <p class="section-sub">Solar tips, project updates, and news from our engineering team.</p>
+    </div>
+    <div class="posts-grid" id="postsGrid">
+      <div class="posts-empty">Loading posts…</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery-section" id="gallery">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Project <span>Gallery</span></h2>
+      <p class="section-sub">Browse completed installations across all categories.</p>
+    </div>
+    <div class="category-filters reveal" id="catFilters">
+      <button class="cat-btn active" data-cat="all">All</button>
+      <button class="cat-btn" data-cat="Solar System Design & Installation">Solar Design & Install</button>
+      <button class="cat-btn" data-cat="Lithium Battery & Inverter Installation">Battery & Inverter</button>
+      <button class="cat-btn" data-cat="Solar Panel Supply & Mounting">Panel Supply & Mounting</button>
+      <button class="cat-btn" data-cat="Solar Water Pumping Systems">Water Pumping</button>
+      <button class="cat-btn" data-cat="Solar Street Lighting">Street Lighting</button>
+      <button class="cat-btn" data-cat="Backup Power Systems">Backup Power</button>
+      <button class="cat-btn" data-cat="Maintenance & Troubleshooting">Maintenance</button>
+      <button class="cat-btn" data-cat="Tubular-to-Lithium Battery Upgrades">Battery Upgrades</button>
+      <button class="cat-btn" data-cat="Energy Audits & Technical Consultations">Energy Audits</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid">
+      <div class="gallery-loading">
+        <div class="spinner"></div>
+        <p>Loading projects…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURE STRIP -->
+<section class="feature-strip-section">
+  <div class="container">
+    <div class="feature-strip">
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-medal"></i></div>
+        <h4>High Quality</h4>
+        <p>Premium components & workmanship</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+        <h4>Reliable & Safe</h4>
+        <p>Certified installation standards</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-headset"></i></div>
+        <h4>Expert Support</h4>
+        <p>24/7 technical assistance</p>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon"><i class="fas fa-piggy-bank"></i></div>
+        <h4>Save More</h4>
+        <p>Lower bills, long-term value</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="container">
+    <div class="cta-strip-inner">
+      <p>Ready to go solar? Our engineers are available Mon–Sat, 8 AM – 7 PM.</p>
+      <a href="tel:+256708755776" class="btn-cta btn-cta-green">
+        <i class="fas fa-phone-alt"></i> Call Us: +256 708 755 776
+      </a>
+      <a href="#contact" class="btn-cta btn-cta-orange">
+        <i class="fas fa-envelope"></i> Get In Touch
+      </a>
+      <a href="https://wa.me/256708755776?text=Hello%20Solar%20Engineering%20Uganda%2C%20I%20would%20like%20a%20quote." target="_blank" class="btn-cta btn-cta-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- LOGOS MARQUEE -->
+<section class="logos-section" id="logos-section">
+  <div class="container">
+    <div class="logos-label">Products We Install</div>
+    <div class="logos-marquee">
+      <div class="logos-track" id="logosTrack"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal-left">
+        <div class="section-line"></div>
+        <h2 class="section-title">Engineering Sustainable<br>Energy For A <span>Brighter Tomorrow</span></h2>
+        <p class="section-sub">Solar Engineering Uganda — reliable, affordable, high-quality solar power for every kind of customer.</p>
+        <p>We specialize in the design, supply, installation, and maintenance of solar energy systems that help customers reduce electricity costs while ensuring dependable power. Our technicians and engineers deliver professional workmanship, quality products, and modern installation standards on every project.</p>
+        <p>From a small home backup system to a large commercial or industrial installation, we bring the expertise to deliver reliable solutions built to perform.</p>
+        <div class="stats-row">
+          <div class="stat-box">
+            <div class="stat-num" data-target="500" data-suffix="+">0</div>
+            <div class="stat-lbl">Systems Installed</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" data-target="24" data-suffix="/7">0</div>
+            <div class="stat-lbl">Support Available</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num" data-target="100" data-suffix="%">0</div>
+            <div class="stat-lbl">Client Satisfaction</div>
+          </div>
+        </div>
+      </div>
+      <div class="about-image reveal-right">
+        <img src="Sun_energy-pana.svg" alt="Solar Engineering Uganda">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<section class="cases-section" id="cases">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Project <span>Case Studies</span></h2>
+      <p class="section-sub">Real installations, real energy savings, for clients across Uganda.</p>
+    </div>
+    <div class="cases-grid" id="casesGrid">
+      <div class="cases-empty" style="grid-column:1/-1;">
+        <div class="spinner"></div>
+        <p>Loading case studies…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Our Core <span>Services</span></h2>
+      <p class="section-sub">Comprehensive solar engineering solutions tailored to your requirements.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal" id="svc-installation">
+        <div class="service-img"><img src="Sun energy-pana.svg" alt="Solar Installation"></div>
+        <div class="service-body">
+          <h3>Solar System Design & Installation</h3>
+          <p>Off-grid, on-grid, and hybrid solar systems designed and installed for homes, businesses, farms, schools, and hospitals.</p>
+        </div>
+      </div>
+      <div class="service-card reveal" id="svc-battery">
+        <div class="service-img"><img src="Smart home-pana.svg" alt="Battery Storage"></div>
+        <div class="service-body">
+          <h3>Lithium Battery & Inverter Systems</h3>
+          <p>Lithium and tubular battery storage, hybrid inverters, and upgrades from tubular to lithium battery systems.</p>
+        </div>
+      </div>
+      <div class="service-card reveal" id="svc-pumping">
+        <div class="service-img"><img src="Gardening-cuate.svg" alt="Water Pumping"></div>
+        <div class="service-body">
+          <h3>Solar Water Pumping</h3>
+          <p>Reliable solar-powered water pumping systems for homes, farms, and irrigation projects.</p>
+        </div>
+      </div>
+      <div class="service-card reveal" id="svc-lighting">
+        <div class="service-img"><img src="Lateness-rafiki.svg" alt="Street Lighting"></div>
+        <div class="service-body">
+          <h3>Solar Street & Security Lighting</h3>
+          <p>Solar street lighting and backup power systems that keep homes, compounds, and business premises lit and secure.</p>
+        </div>
+      </div>
+      <!-- CCTV & Security – image set to Security-rafiki.svg -->
+      <div class="service-card reveal" id="svc-cctv">
+        <div class="service-img"><img src="Security-rafiki.svg" alt="CCTV & Security Systems"></div>
+        <div class="service-body">
+          <h3>CCTV & Security Systems</h3>
+          <p>Surveillance and security camera installation to keep your home, business, or industrial site protected.</p>
+        </div>
+      </div>
+      <div class="service-card reveal" id="svc-industrial">
+        <div class="service-img"><img src="chicken farm-cuate.svg" alt="Industrial & Agricultural Solar"></div>
+        <div class="service-body">
+          <h3>Industrial & Agricultural Solar</h3>
+          <p>Large-scale renewable energy solutions for farms, factories, and institutions with heavy power demands.</p>
+        </div>
+      </div>
+      <div class="service-card reveal" id="svc-maintenance">
+        <div class="service-img"><img src="Pipeline maintenance-cuate.svg" alt="Maintenance"></div>
+        <div class="service-body">
+          <h3>Maintenance & Technical Support</h3>
+          <p>Preventive maintenance, troubleshooting, energy audits, and ongoing performance optimization for installed systems.</p>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-img"><img src="Smart home-pana.svg" alt="Backup Power"></div>
+        <div class="service-body">
+          <h3>Backup Power Systems</h3>
+          <p>Reliable backup solutions for uninterrupted power during outages.</p>
+        </div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-img"><img src="To do list-bro.svg" alt="Energy Audit"></div>
+        <div class="service-body">
+          <h3>Energy Audits & Technical Consultations</h3>
+          <p>Professional energy assessments and expert advice to optimize your power setup.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories-section" id="categories">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Our <span>Categories</span></h2>
+      <p class="section-sub">Click a category to filter projects in the gallery.</p>
+    </div>
+    <div class="categories-grid reveal">
+      <a href="#gallery" class="cat-card" data-filter="Solar System Design & Installation">
+        <i class="fas fa-solar-panel cat-icon"></i>
+        <h3>Solar System Design & Installation</h3>
+        <p>Custom off-grid, on-grid, and hybrid systems for every property.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Lithium Battery & Inverter Installation">
+        <i class="fas fa-car-battery cat-icon"></i>
+        <h3>Lithium Battery & Inverter Installation</h3>
+        <p>Modern battery storage and inverter solutions for reliable backup.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Solar Panel Supply & Mounting">
+        <i class="fas fa-sun cat-icon"></i>
+        <h3>Solar Panel Supply & Mounting</h3>
+        <p>High-efficiency panels and professional mounting structures.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Solar Water Pumping Systems">
+        <i class="fas fa-tint cat-icon"></i>
+        <h3>Solar Water Pumping Systems</h3>
+        <p>Solar-powered pumping for farms, irrigation, and rural water supply.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Solar Street Lighting">
+        <i class="fas fa-lightbulb cat-icon"></i>
+        <h3>Solar Street Lighting</h3>
+        <p>Energy‑efficient street and area lighting installations.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Backup Power Systems">
+        <i class="fas fa-power-off cat-icon"></i>
+        <h3>Backup Power Systems</h3>
+        <p>Uninterrupted power for homes, offices, and critical loads.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Maintenance & Troubleshooting">
+        <i class="fas fa-tools cat-icon"></i>
+        <h3>Maintenance & Troubleshooting</h3>
+        <p>Regular maintenance and fast fault diagnosis to keep systems running.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Tubular-to-Lithium Battery Upgrades">
+        <i class="fas fa-exchange-alt cat-icon"></i>
+        <h3>Tubular‑to‑Lithium Battery Upgrades</h3>
+        <p>Upgrade your existing battery bank to modern lithium technology.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+      <a href="#gallery" class="cat-card" data-filter="Energy Audits & Technical Consultations">
+        <i class="fas fa-clipboard-check cat-icon"></i>
+        <h3>Energy Audits & Technical Consultations</h3>
+        <p>Professional assessments to optimize energy usage and system design.</p>
+        <span class="cat-card-link">View Projects →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- WHY SWITCH TO SOLAR -->
+<section class="switch-section" id="switch">
+  <div class="container">
+    <div class="switch-grid">
+      <div class="switch-image reveal-left">
+        <img src="Switches-cuate.svg" alt="Switch to Solar">
+      </div>
+      <div class="switch-content reveal-right">
+        <h3>Why Switch to Solar?</h3>
+        <p>Stop relying on expensive, noisy, and polluting generators. Solar gives you clean, quiet, and reliable power that pays for itself over time.</p>
+        <ul class="switch-list">
+          <li><i class="fas fa-check-circle"></i> Zero fuel costs</li>
+          <li><i class="fas fa-check-circle"></i> Silent operation</li>
+          <li><i class="fas fa-check-circle"></i> Low maintenance</li>
+          <li><i class="fas fa-check-circle"></i> Environmentally friendly</li>
+          <li><i class="fas fa-check-circle"></i> 25+ year panel life</li>
+          <li><i class="fas fa-check-circle"></i> Increase property value</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Client <span>Testimonials</span></h2>
+      <p class="section-sub">What our clients say about working with Solar Engineering Uganda.</p>
+    </div>
+    <div class="testimonials-grid" id="testimonialsGrid">
+      <div class="testi-empty" style="grid-column:1/-1;">
+        <div class="spinner"></div>
+        <p>Loading testimonials…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="team-section" id="team">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Our <span>Team</span></h2>
+      <p class="section-sub">The engineers and technicians behind every Solar Engineering Uganda project.</p>
+    </div>
+    <div class="team-grid" id="teamGrid">
+      <div style="grid-column:1/-1;text-align:center;padding:40px;color:rgba(255,255,255,0.4);">
+        <div class="spinner" style="border-color:rgba(255,255,255,0.1);border-top-color:var(--green);"></div>
+        <p style="margin-top:12px;font-size:0.88rem;">Loading team…</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section class="certs-section" id="certifications">
+  <div class="container">
+    <div class="certs-label">Certifications & Memberships</div>
+    <div class="certs-track" id="certsTrack">
+      <div class="cert-item">
+        <img src="Certification-rafiki.svg" alt="Quality Guarantee" class="cert-img" style="height:40px;">
+        Licensed Solar Contractor
+      </div>
+      <div class="cert-item"><i class="fas fa-award cert-icon"></i> Quality Installation Standards</div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIFIED CONTACT -->
+<section class="unified-contact" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line" style="background:linear-gradient(90deg,var(--green),var(--orange));"></div>
+      <h2 class="section-title">Get In <span>Touch</span></h2>
+      <p class="section-sub">Our engineers respond within 24 hours. Fill in the form or reach us directly.</p>
+    </div>
+
+    <div class="contact-info-block">
+      <div class="contact-info-item">
+        <div class="contact-info-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+        <div class="contact-info-text">
+          <strong>Office</strong>
+          <span>Anna Power Point Building, Nakasero Market Street, Kampala</span>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon-circle"><i class="fas fa-phone-alt"></i></div>
+        <div class="contact-info-text">
+          <strong>Phone</strong>
+          <a href="tel:+256708755776">+256 708 755 776</a> / <a href="tel:+256771557508">+256 771 557 508</a>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon-circle"><i class="fas fa-envelope"></i></div>
+        <div class="contact-info-text">
+          <strong>Email</strong>
+          <a href="mailto:Solarengineeringug@gmail.com">Solarengineeringug@gmail.com</a>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon-circle"><i class="fas fa-clock"></i></div>
+        <div class="contact-info-text">
+          <strong>Hours</strong>
+          <span>Mon–Sat, 8:00 AM – 7:00 PM</span>
+        </div>
+      </div>
+      <div class="contact-info-item">
+        <div class="contact-info-icon-circle" style="background:#25d366;"><i class="fab fa-whatsapp"></i></div>
+        <div class="contact-info-text">
+          <strong>WhatsApp</strong>
+          <a href="https://wa.me/256708755776" target="_blank">+256 708 755 776</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-card">
+      <div class="contact-form-title"><i class="fas fa-paper-plane"></i> Send Us a Message</div>
+      <div class="form-grid-2">
+        <div class="form-field">
+          <label>Full Name *</label>
+          <input type="text" id="uName" placeholder="Your full name" required>
+        </div>
+        <div class="form-field">
+          <label>Phone Number *</label>
+          <input type="tel" id="uPhone" placeholder="+256 7XX XXX XXX" required>
+        </div>
+      </div>
+      <div class="form-field">
+        <label>Email Address *</label>
+        <input type="email" id="uEmail" placeholder="your@email.com" required>
+      </div>
+      <div class="form-field">
+        <label>Service Needed</label>
+        <select id="uService">
+          <option value="">Select a service…</option>
+          <option>Solar System Design & Installation</option>
+          <option>Lithium Battery & Inverter Installation</option>
+          <option>Solar Panel Supply & Mounting</option>
+          <option>Solar Water Pumping Systems</option>
+          <option>Solar Street Lighting</option>
+          <option>Backup Power Systems</option>
+          <option>Maintenance & Troubleshooting</option>
+          <option>Tubular-to-Lithium Battery Upgrades</option>
+          <option>Energy Audits & Technical Consultations</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Location / Area (optional)</label>
+        <input type="text" id="uLocation" placeholder="e.g. Ntinda, Kampala">
+      </div>
+      <div class="form-field">
+        <label>Message *</label>
+        <textarea id="uMessage" placeholder="Tell us about your project, power needs, or questions…" required></textarea>
+      </div>
+      <button class="btn-cta btn-cta-green" id="submitUnifiedBtn" style="width:100%;justify-content:center;">
+        <i class="fas fa-paper-plane"></i> Send Message
+        <span class="form-spinner" id="uSpinner"></span>
+      </button>
+      <div class="form-status" id="uStatus"></div>
+    </div>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-line"></div>
+      <h2 class="section-title">Our <span>Location</span></h2>
+      <p class="section-sub">Anna Power Point Building, Nakasero Market Street, Kampala.</p>
+    </div>
+    <div id="map"></div>
+    <a href="https://www.google.com/maps/search/?api=1&query=Anna+Power+Point+Building+Nakasero+Kampala" target="_blank" rel="noopener" class="map-directions-link">
+      <i class="fas fa-map-marker-alt"></i> Get Directions on Google Maps
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-logo">SOLAR <span>ENGINEERING</span></span>
+        <p>Reliable, affordable, and sustainable solar energy solutions for homes, businesses, farms, schools, and industry across Uganda.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="#gallery">Projects</a>
+        <a href="#posts">Blog</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="location.html">Location</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="#svc-installation">Solar Installation</a>
+        <a href="#svc-battery">Battery Storage</a>
+        <a href="#svc-pumping">Water Pumping</a>
+        <a href="#svc-lighting">Street Lighting</a>
+        <a href="#svc-maintenance">Maintenance</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Anna Power Point Building, Nakasero Market Street, Kampala</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-phone"></i>
+          <span>+256 708 755 776 / +256 771 557 508</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-envelope"></i>
+          <span>Solarengineeringug@gmail.com</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-clock"></i>
+          <span>Mon–Sat: 8:00 AM – 7:00 PM</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>
+        &copy; 2026 Solar Engineering Uganda. All rights reserved. Powering Your Tomorrow — Kampala, Uganda.
+        <br>
+        <a href="https://storyset.com" target="_blank" rel="noopener" class="storyset-attribution">
+          <img src="Security-rafiki.svg" alt=""> Illustrations by Storyset
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-inner">
+    <button class="lightbox-close" id="lightboxClose"><i class="fas fa-times"></i></button>
+    <img src="" alt="" class="lightbox-img" id="lightboxImg">
+    <div class="lightbox-body">
+      <h3 id="lightboxTitle"></h3>
+      <div class="lightbox-price" id="lightboxPrice"></div>
+      <p id="lightboxDesc"></p>
+      <a href="#contact" class="lightbox-quote">Request a Quote</a>
+    </div>
+  </div>
+</div>
+
+<!-- LEAFLET -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- PLAIN JS -->
+<script>
+  // ── MOBILE MENU (slide from top) ──
+  var mobileOpen    = document.getElementById('mobileOpen');
+  var mobileClose   = document.getElementById('mobileClose');
+  var mobileDrawer  = document.getElementById('mobileDrawer');
+
+  function openMenu()  { mobileDrawer.classList.add('open'); }
+  function closeMenu() { mobileDrawer.classList.remove('open'); }
+
+  mobileOpen.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  document.addEventListener('click', function(e) {
+    if (!mobileDrawer.contains(e.target) && !mobileOpen.contains(e.target)) {
+      closeMenu();
+    }
+  });
+  document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeMenu(); });
+
+  // ── SCROLL TOP ──
+  var scrollTopBtn = document.getElementById('scrollTop');
+  window.addEventListener('scroll', function() { scrollTopBtn.classList.toggle('show', window.scrollY > 400); });
+  scrollTopBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+
+  // ── SCROLL REVEAL ──
+  function revealElements() {
+    document.querySelectorAll('.reveal:not(.visible), .reveal-left:not(.visible), .reveal-right:not(.visible)').forEach(function(el) {
+      if (el.getBoundingClientRect().top < window.innerHeight - 80) el.classList.add('visible');
+    });
+  }
+  window.addEventListener('scroll', revealElements, { passive: true });
+  revealElements();
+
+  // ── COUNTER ANIMATION ──
+  function animateCounter(el) {
+    var target   = parseInt(el.dataset.target);
+    var suffix   = el.dataset.suffix || '';
+    var duration = 1400;
+    var start    = performance.now();
+
+    function update(now) {
+      var elapsed  = now - start;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased    = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.floor(eased * target) + suffix;
+      if (progress < 1) requestAnimationFrame(update);
+    }
+    requestAnimationFrame(update);
+  }
+
+  var statObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !entry.target.dataset.counted) {
+        entry.target.dataset.counted = 'true';
+        animateCounter(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('.stat-num[data-target]').forEach(function(el) { statObserver.observe(el); });
+
+  // ── MAP ──
+  document.addEventListener('DOMContentLoaded', function() {
+    var mapEl = document.getElementById('map');
+    if (mapEl) {
+      var lat = 0.3163, lng = 32.5822;
+      var map = L.map('map').setView([lat, lng], 17);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      }).addTo(map);
+      L.marker([lat, lng]).addTo(map)
+        .bindPopup('<strong>Solar Engineering Uganda</strong><br>Anna Power Point Building<br>Nakasero Market Street, Kampala')
+        .openPopup();
+    }
+  });
+
+  // ── SERVICES DROPDOWN ──
+  const dropdownBtn = document.getElementById('servicesDropdownBtn');
+  const servicesMenu = document.getElementById('servicesMenu');
+
+  dropdownBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    this.classList.toggle('open');
+    servicesMenu.classList.toggle('open');
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!dropdownBtn.contains(e.target)) {
+      dropdownBtn.classList.remove('open');
+      servicesMenu.classList.remove('open');
+    }
+  });
+
+  servicesMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', function() {
+      dropdownBtn.classList.remove('open');
+      servicesMenu.classList.remove('open');
+    });
+  });
+
+  // ── CATEGORY CARDS ──
+  document.querySelectorAll('.cat-card').forEach(function(card) {
+    card.addEventListener('click', function(e) {
+      e.preventDefault();
+      var filter = card.dataset.filter;
+      window._activeFilter = filter;
+      document.querySelectorAll('.cat-btn').forEach(function(b) {
+        b.classList.remove('active');
+        if (b.dataset.cat === filter) b.classList.add('active');
+      });
+      if (typeof window._renderGallery === 'function') window._renderGallery();
+      document.getElementById('gallery').scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ── BANNER CLOSE ──
+  document.getElementById('bannerClose').addEventListener('click', function() {
+    document.getElementById('announcementBanner').classList.remove('show');
+  });
+</script>
+
+<!-- FIREBASE MODULE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+  import {
+    getFirestore, collection, query, orderBy, onSnapshot,
+    getDocs, getDoc, doc, addDoc, serverTimestamp, limit, where
+  } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+
+  // Your actual Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAka-l2lZKzuUUUnyXfXA7zeIr-t1ggLR8",
+    authDomain: "solar-engineering1.firebaseapp.com",
+    projectId: "solar-engineering1",
+    storageBucket: "solar-engineering1.firebasestorage.app",
+    messagingSenderId: "996702148571",
+    appId: "1:996702148571:web:e3f77ff96d150b353ef9fe",
+    measurementId: "G-EBZ7XN2E3K"
+  };
+
+  // Initialize Firebase (single app)
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Helper functions
+  function showFormStatus(id, msg, type) {
+    var el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = 'form-status ' + type + ' show';
+    setTimeout(function() { el.classList.remove('show'); }, 6000);
+  }
+  function setSpinner(id, show) {
+    document.getElementById(id).style.display = show ? 'inline-block' : 'none';
+  }
+
+  // ── ANNOUNCEMENT BANNER ──
+  (async () => {
+    try {
+      const bannerSnap = await getDoc(doc(db, 'settings', 'banner'));
+      if (bannerSnap.exists()) {
+        const b = bannerSnap.data();
+        if (b.active && b.text) {
+          const banner = document.getElementById('announcementBanner');
+          document.getElementById('bannerMsg').textContent = b.text;
+          banner.className = 'announcement-banner show ' + (b.type || 'info');
+          if (b.ctaLabel && b.ctaUrl) {
+            const ctaBtn = document.getElementById('bannerCtaBtn');
+            ctaBtn.textContent = b.ctaLabel;
+            ctaBtn.href = b.ctaUrl;
+            ctaBtn.style.display = 'inline-flex';
+          }
+        }
+      }
+    } catch(e) {}
+  })();
+
+  // ── BRAND LOGOS ──
+  function populateLogos() {
+    const logos = ['logo1.png', 'logo2.png', 'logo3.png', 'logo4.svg', 'logo5.svg'];
+    const track = document.getElementById('logosTrack');
+    const items = logos.concat(logos);
+    track.innerHTML = items.map(src => `<img src="${src}" alt="Partner Logo" class="logo-partner">`).join('');
+  }
+  populateLogos();
+
+  // ── BLOG POSTS (max 2) ──
+  async function loadPosts() {
+    const grid = document.getElementById('postsGrid');
+    try {
+      const q = query(collection(db, 'blogs'), orderBy('timestamp', 'desc'), limit(2));
+      const snap = await getDocs(q);
+      if (snap.empty) {
+        grid.innerHTML = '<div class="posts-empty">No blog posts yet. Check back soon.</div>';
+        return;
+      }
+      const items = [];
+      snap.forEach(d => items.push({ id: d.id, ...d.data() }));
+      grid.innerHTML = items.map(post => {
+        const body    = post.body || '';
+        const short   = body.length > 160 ? body.substring(0, 160) : body;
+        const hasMore = body.length > 160;
+        const date    = post.timestamp?.toDate ? post.timestamp.toDate().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+        return `
+          <div class="post-card reveal">
+            <span class="post-type-tag">Blog</span>
+            <h3>${post.title || 'Untitled'}</h3>
+            <div class="post-body">
+              <span class="post-body-text">${short}${hasMore ? '...' : ''}</span>
+              ${hasMore ? `<button class="see-more-btn" data-full="${encodeURIComponent(body)}">See more</button>` : ''}
+            </div>
+            ${date ? `<div class="post-date"><i class="far fa-calendar-alt"></i> ${date}</div>` : ''}
+          </div>`;
+      }).join('');
+
+      grid.querySelectorAll('.see-more-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const full  = decodeURIComponent(this.dataset.full);
+          const bodyEl = this.closest('.post-body').querySelector('.post-body-text');
+          bodyEl.textContent = full;
+          this.remove();
+        });
+      });
+      revealElements();
+    } catch(e) {
+      grid.innerHTML = '<div class="posts-empty">Unable to load posts right now.</div>';
+    }
+  }
+  loadPosts();
+
+  // ── GALLERY ──
+  let allProducts = [];
+  window._activeFilter = 'all';
+
+  const q = query(collection(db, 'solar_products'), orderBy('createdAt', 'desc'));
+  onSnapshot(q, (snapshot) => {
+    allProducts = [];
+    snapshot.forEach(d => allProducts.push({ id: d.id, ...d.data() }));
+    window._renderGallery();
+  });
+
+  window._renderGallery = function() {
+    const grid     = document.getElementById('galleryGrid');
+    const filtered = window._activeFilter === 'all' ? allProducts : allProducts.filter(p => p.category === window._activeFilter);
+    if (filtered.length === 0) {
+      grid.innerHTML = '<div class="gallery-empty"><p>No projects in this category yet.</p></div>';
+      return;
+    }
+    grid.innerHTML = filtered.map(product => {
+      const desc    = product.description || '';
+      const short   = desc.length > 100 ? desc.substring(0, 100) : desc;
+      const hasMore = desc.length > 100;
+      return `
+        <div class="gallery-card reveal" data-id="${product.id}">
+          <div class="gallery-img-wrap">
+            <img src="${product.image}" alt="${product.title}" loading="lazy">
+            <span class="gallery-price">${product.price || 'Get Quote'}</span>
+          </div>
+          <div class="gallery-info">
+            <span class="gallery-cat">${product.category || 'General'}</span>
+            <h3>${product.title}</h3>
+            <div class="gallery-desc">
+              <span class="gallery-desc-text">${short}${hasMore ? '...' : ''}</span>
+              ${hasMore ? `<button class="see-more-btn" data-full="${encodeURIComponent(desc)}">See more</button>` : ''}
+            </div>
+            <a href="#contact" class="gallery-action">Request Quote</a>
+          </div>
+        </div>`;
+    }).join('');
+
+    grid.querySelectorAll('.see-more-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const full  = decodeURIComponent(this.dataset.full);
+        const descEl = this.closest('.gallery-desc').querySelector('.gallery-desc-text');
+        descEl.textContent = full;
+        this.remove();
+      });
+    });
+    grid.querySelectorAll('.gallery-card').forEach((card, i) => {
+      card.addEventListener('click', (e) => {
+        if (e.target.classList.contains('see-more-btn') || e.target.classList.contains('gallery-action')) return;
+        openLightbox(filtered[i]);
+      });
+    });
+    revealElements();
+  };
+
+  document.getElementById('catFilters').addEventListener('click', (e) => {
+    if (!e.target.classList.contains('cat-btn')) return;
+    document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+    e.target.classList.add('active');
+    window._activeFilter = e.target.dataset.cat;
+    window._renderGallery();
+  });
+
+  function openLightbox(product) {
+    document.getElementById('lightboxImg').src    = product.image;
+    document.getElementById('lightboxTitle').textContent = product.title;
+    document.getElementById('lightboxPrice').textContent = product.price || 'Request Quote';
+    document.getElementById('lightboxDesc').textContent  = product.description || '';
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  document.getElementById('lightboxClose').addEventListener('click', () => {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+  document.getElementById('lightbox').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('lightbox')) {
+      document.getElementById('lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // ── CASE STUDIES ──
+  (async () => {
+    try {
+      const casesSnap = await getDocs(query(collection(db, 'case_studies'), orderBy('createdAt', 'desc')));
+      const casesGrid = document.getElementById('casesGrid');
+      if (casesSnap.empty) {
+        document.getElementById('cases').style.display = 'none';
+      } else {
+        casesGrid.innerHTML = '';
+        casesSnap.forEach(d => {
+          const c   = d.data();
+          const card = document.createElement('div');
+          card.className = 'case-card reveal';
+          card.innerHTML = `
+            ${c.imageUrl ? `<img class="case-card-img" src="${c.imageUrl}" alt="${c.title}" loading="lazy">` : ''}
+            <div class="case-card-body">
+              ${c.category ? `<span class="case-cat">${c.category}</span>` : ''}
+              <h3>${c.title}</h3>
+              <p>${c.summary || ''}</p>
+              ${c.result ? `<div class="case-result"><i class="fas fa-sun" style="color:var(--orange);"></i> ${c.result}</div>` : ''}
+              <div class="case-meta">
+                ${c.client ? `<span><i class="fas fa-building" style="color:var(--green);margin-right:4px;"></i>${c.client}</span>` : ''}
+                ${c.location ? `<span><i class="fas fa-map-marker-alt" style="color:var(--green);margin-right:4px;"></i>${c.location}</span>` : ''}
+                ${c.year ? `<span>${c.year}</span>` : ''}
+              </div>
+            </div>`;
+          casesGrid.appendChild(card);
+        });
+        revealElements();
+      }
+    } catch(e) {
+      document.getElementById('cases').style.display = 'none';
+    }
+  })();
+
+  // ── TESTIMONIALS ──
+  (async () => {
+    try {
+      const testiSnap = await getDocs(query(collection(db, 'testimonials'), where('status', '==', 'approved'), orderBy('createdAt', 'desc')));
+      const testiGrid = document.getElementById('testimonialsGrid');
+      if (testiSnap.empty) {
+        document.getElementById('testimonials').style.display = 'none';
+      } else {
+        testiGrid.innerHTML = '';
+        testiSnap.forEach(d => {
+          const t      = d.data();
+          const stars  = '★'.repeat(t.rating || 5) + '☆'.repeat(5 - (t.rating || 5));
+          const initials = t.name ? t.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
+          const card   = document.createElement('div');
+          card.className = 'testi-card reveal';
+          card.innerHTML = `
+            <div class="testi-stars">${stars}</div>
+            <div class="testi-text">${t.text}</div>
+            <div class="testi-author">
+              ${t.photoUrl
+                ? `<img class="testi-photo" src="${t.photoUrl}" alt="${t.name}">`
+                : `<div class="testi-photo-placeholder">${initials}</div>`}
+              <div>
+                <div class="testi-name">${t.name}</div>
+                ${t.role ? `<div class="testi-role">${t.role}</div>` : ''}
+                ${t.service ? `<span class="testi-service">${t.service}</span>` : ''}
+              </div>
+            </div>`;
+          testiGrid.appendChild(card);
+        });
+        revealElements();
+      }
+    } catch(e) {
+      document.getElementById('testimonials').style.display = 'none';
+    }
+  })();
+
+  // ── TEAM ──
+  (async () => {
+    try {
+      const teamSnap = await getDocs(query(collection(db, 'team_members'), orderBy('createdAt', 'asc')));
+      const teamGrid = document.getElementById('teamGrid');
+      if (teamSnap.empty) {
+        document.getElementById('team').style.display = 'none';
+      } else {
+        teamGrid.innerHTML = '';
+        teamSnap.forEach(d => {
+          const m        = d.data();
+          const initials = m.name ? m.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
+          const card     = document.createElement('div');
+          card.className = 'team-card reveal';
+          card.innerHTML = `
+            ${m.photoUrl
+              ? `<img class="team-photo" src="${m.photoUrl}" alt="${m.name}">`
+              : `<div class="team-initials">${initials}</div>`}
+            <div class="team-card-name">${m.name}</div>
+            <div class="team-card-role">${m.role}</div>
+            ${m.bio ? `<div class="team-card-bio">${m.bio}</div>` : ''}
+            ${m.linkedIn ? `<a href="${m.linkedIn}" target="_blank" style="color:var(--green);font-size:0.8rem;margin-top:10px;display:inline-block;"><i class="fab fa-linkedin"></i> LinkedIn</a>` : ''}`;
+          teamGrid.appendChild(card);
+        });
+        revealElements();
+      }
+    } catch(e) {
+      document.getElementById('team').style.display = 'none';
+    }
+  })();
+
+  // ── CERTIFICATIONS ──
+  (async () => {
+    try {
+      const certSnap = await getDocs(query(collection(db, 'certifications'), orderBy('createdAt', 'asc')));
+      if (!certSnap.empty) {
+        const track = document.getElementById('certsTrack');
+        track.innerHTML = '';
+        certSnap.forEach(d => {
+          const c    = d.data();
+          const item = document.createElement('div');
+          item.className = 'cert-item';
+          item.innerHTML = c.imageUrl
+            ? `<img class="cert-img" src="${c.imageUrl}" alt="${c.title}"> ${c.title}`
+            : `<i class="fas fa-certificate cert-icon"></i> ${c.title}`;
+          track.appendChild(item);
+        });
+      }
+    } catch(e) {}
+  })();
+
+  // ── UNIFIED CONTACT FORM ──
+  document.getElementById('submitUnifiedBtn').addEventListener('click', async () => {
+    const name    = document.getElementById('uName').value.trim();
+    const phone   = document.getElementById('uPhone').value.trim();
+    const email   = document.getElementById('uEmail').value.trim();
+    const message = document.getElementById('uMessage').value.trim();
+
+    if (!name || !phone || !email || !message) {
+      showFormStatus('uStatus', 'All fields marked with * are required.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('submitUnifiedBtn');
+    btn.disabled = true;
+    setSpinner('uSpinner', true);
+
+    const payload = {
+      name,
+      phone,
+      email,
+      service: document.getElementById('uService').value,
+      location: document.getElementById('uLocation').value.trim(),
+      message
+    };
+
+    try {
+      // 1. Send email via Cloudflare Worker
+      const mailResponse = await fetch('https://solar-engineering-worker.lubegadoreen02.workers.dev/mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      const mailResult = await mailResponse.json();
+      if (!mailResult.success) {
+        console.warn('Email failed:', mailResult.error);
+      }
+
+      // 2. Also store in Firestore
+      await addDoc(collection(db, 'contact_messages'), {
+        ...payload,
+        status: 'new',
+        source: 'website',
+        createdAt: serverTimestamp()
+      });
+
+      showFormStatus('uStatus', 'Thank you! Your message has been sent. We will contact you within 24 hours.', 'success');
+      ['uName','uPhone','uEmail','uLocation','uMessage'].forEach(id => document.getElementById(id).value = '');
+      document.getElementById('uService').value = '';
+    } catch (e) {
+      console.error(e);
+      showFormStatus('uStatus', 'Error sending. Please call us directly.', 'error');
+    } finally {
+      btn.disabled = false;
+      setSpinner('uSpinner', false);
+    }
+  });
+</script>
+</body>
+</html>
