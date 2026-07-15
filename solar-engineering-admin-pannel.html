@@ -1,0 +1,886 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – Solar Engineering Uganda</title>
+  <link rel="icon" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #1e8f3e;
+      --green-dark: #146b2e;
+      --orange: #f7941d;
+      --orange-dark: #d97e0a;
+      --black: #0a0f0a;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e8e8e8;
+      --gray-400: #9e9e9e;
+      --text: #1a1a1a;
+      --text-muted: #5f6368;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+      --bg: #f0f2f5;
+      --card-bg: #ffffff;
+      --input-bg: #ffffff;
+      --input-border: #ddd;
+      --nav-hover-bg: #e8f5e9;
+    }
+
+    body.dark {
+      --green: #2ecc71;
+      --green-dark: #27ae60;
+      --black: #ffffff;
+      --white: #1e1e1e;
+      --gray-100: #2c2c2c;
+      --gray-200: #3a3a3a;
+      --gray-400: #aaaaaa;
+      --text: #e0e0e0;
+      --text-muted: #aaaaaa;
+      --shadow: 0 2px 12px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --input-bg: #2c2c2c;
+      --input-border: #444;
+      --nav-hover-bg: #2c3e2c;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    /* ── HEADER (same as main site) ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: var(--shadow);
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .logo img { height: 44px; width: auto; }
+    .logo-text {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: 1px;
+    }
+    .logo-text span { color: var(--orange); }
+
+    /* Dropdown for admin sections */
+    .admin-dropdown {
+      position: relative;
+    }
+    .admin-dropdown-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      background: var(--green);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.92rem;
+      font-family: 'Barlow', sans-serif;
+      letter-spacing: 0.3px;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: var(--shadow);
+    }
+    .admin-dropdown-btn:hover { background: var(--green-dark); }
+    .admin-dropdown-btn i { font-size: 0.7rem; transition: transform 0.2s; }
+    .admin-dropdown-btn.open i { transform: rotate(180deg); }
+
+    .admin-menu {
+      display: block;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-lg);
+      min-width: 220px;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+    }
+    .admin-menu.open { opacity: 1; visibility: visible; transform: translateY(0); }
+    .admin-menu a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      font-weight: 500;
+      font-size: 0.92rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: background 0.15s, color 0.15s, padding-left 0.15s;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .admin-menu a:last-child { border-bottom: none; }
+    .admin-menu a i { width: 16px; text-align: center; color: var(--green); font-size: 0.85rem; }
+    .admin-menu a:hover { background: var(--nav-hover-bg); padding-left: 22px; }
+    .admin-menu a.active { background: var(--nav-hover-bg); color: var(--green-dark); font-weight: 700; }
+
+    /* Right side buttons */
+    .header-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .btn-icon {
+      background: none;
+      border: none;
+      font-size: 1.15rem;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .btn-icon:hover { background: var(--gray-100); }
+
+    /* ── Content ── */
+    .container { max-width: 1200px; margin: 40px auto; padding: 0 24px; }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow);
+    }
+    .card h3 {
+      margin-bottom: 20px;
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+    }
+    .card h3::before {
+      content: '';
+      width: 5px;
+      height: 22px;
+      background: linear-gradient(180deg, var(--green), var(--orange));
+      border-radius: 3px;
+      display: inline-block;
+    }
+
+    input, textarea, select {
+      width: 100%; padding: 11px 14px; margin-bottom: 14px;
+      border: 1px solid var(--input-border); border-radius: 8px;
+      background: var(--input-bg); color: var(--text);
+      font-family: 'Barlow', sans-serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    input:focus, textarea:focus, select:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(30,143,62,0.12); }
+
+    label { font-weight: 600; display: block; margin-bottom: 6px; color: var(--text-muted); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px;
+      border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+      background: var(--green); color: #fff; transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+      font-family: 'Barlow', sans-serif; font-size: 0.92rem;
+    }
+    .btn:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: var(--shadow); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    .btn-small { padding: 7px 12px; font-size: 0.8rem; border-radius: 6px; }
+
+    .btn-outline { background: transparent; color: var(--green); border: 1px solid var(--green); }
+    .btn-outline:hover { background: var(--nav-hover-bg); transform: translateY(-1px); }
+
+    .btn-danger { background: #d93025; }
+    .btn-danger:hover { background: #a50e0e; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; margin-top: 24px; }
+
+    .item-card {
+      background: var(--card-bg); border: 1px solid var(--gray-200);
+      border-radius: 10px; padding: 16px; box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .item-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--green); }
+    .item-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+    .item-actions { display: flex; gap: 8px; margin-top: 10px; }
+
+    .progress-bar {
+      height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; margin: 12px 0; display: none;
+    }
+    .progress-bar.active { display: block; }
+    .progress-bar div {
+      height: 100%; width: 0%; background: var(--green); border-radius: 2px;
+      animation: progressIndeterminate 1.5s infinite;
+    }
+    @keyframes progressIndeterminate {
+      0% { width: 0%; margin-left: 0; }
+      50% { width: 70%; margin-left: 15%; }
+      100% { width: 0%; margin-left: 100%; }
+    }
+
+    /* ── Status messages (fixes previously unstyled status text) ── */
+    #prodStatus, #blogStatus, #caseStatus, #testiStatus, #teamStatus, #certStatus {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 0.88rem;
+      font-weight: 600;
+    }
+    .status-success {
+      background: rgba(30,143,62,0.1);
+      color: var(--green-dark);
+      border: 1px solid rgba(30,143,62,0.25);
+    }
+    .status-error {
+      background: rgba(217,48,37,0.08);
+      color: #d93025;
+      border: 1px solid rgba(217,48,37,0.25);
+    }
+
+    .login-card {
+      max-width: 400px; margin: 100px auto; text-align: center;
+      background: linear-gradient(160deg, var(--card-bg) 0%, var(--card-bg) 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--green), var(--orange));
+    }
+    .login-card i.fa-lock {
+      display: block;
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .login-card h2 { font-family: 'Baloo 2', cursive; font-weight: 800; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 768px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      header { padding: 12px 16px; }
+      .logo-text { font-size: 1.1rem; }
+      .header-actions .btn span.btn-label { display: none; }
+      .admin-menu { min-width: 200px; }
+    }
+    @media (max-width: 480px) {
+      .header-actions { gap: 8px; }
+      .admin-dropdown-btn { padding: 9px 14px; font-size: 0.85rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <!-- Header (shown after login) -->
+    <header id="adminHeader" class="hidden">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Solar Engineering Uganda">
+        <span class="logo-text">SOLAR <span>ENGINEERING</span></span>
+      </a>
+      <div class="header-actions">
+        <button id="themeToggle" class="btn-icon" title="Toggle dark/light mode"><i class="fas fa-moon"></i></button>
+        <div class="admin-dropdown">
+          <button id="adminDropdownBtn" class="admin-dropdown-btn">Sections <i class="fas fa-chevron-down"></i></button>
+          <div id="adminMenu" class="admin-menu">
+            <a href="#" data-section="products"><i class="fas fa-solar-panel"></i> Products</a>
+            <a href="#" data-section="blogs"><i class="fas fa-newspaper"></i> Blogs</a>
+            <a href="#" data-section="cases"><i class="fas fa-briefcase"></i> Case Studies</a>
+            <a href="#" data-section="testimonials"><i class="fas fa-star"></i> Testimonials</a>
+            <a href="#" data-section="team"><i class="fas fa-users"></i> Team</a>
+            <a href="#" data-section="certifications"><i class="fas fa-certificate"></i> Certifications</a>
+            <a href="#" data-section="messages"><i class="fas fa-envelope"></i> Messages</a>
+          </div>
+        </div>
+        <button id="logoutBtn" class="btn btn-outline btn-small"><i class="fas fa-sign-out-alt"></i> <span class="btn-label">Logout</span></button>
+      </div>
+    </header>
+
+    <!-- Login -->
+    <div id="loginSection" class="login-card card">
+      <h2><i class="fas fa-lock" style="color:var(--green);"></i> Admin Login</h2>
+      <p style="margin-bottom:24px; color:var(--text-muted);">Sign in with your Google account.</p>
+      <button id="googleLoginBtn" class="btn" style="background:#4285f4;"><i class="fab fa-google"></i> Sign in with Google</button>
+      <div id="loginError" class="hidden" style="margin-top:16px; color:#d93025;"></div>
+    </div>
+
+    <!-- Dashboard -->
+    <div id="dashboardSection" class="hidden container">
+      <div id="sectionContent" class="card">
+        <p>Select a section from the dropdown menu.</p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, getDocs, addDoc, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-firestore.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.8.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAka-l2lZKzuUUUnyXfXA7zeIr-t1ggLR8",
+      authDomain: "solar-engineering1.firebaseapp.com",
+      projectId: "solar-engineering1",
+      storageBucket: "solar-engineering1.firebasestorage.app",
+      messagingSenderId: "996702148571",
+      appId: "1:996702148571:web:e3f77ff96d150b353ef9fe",
+      measurementId: "G-EBZ7XN2E3K"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+    const provider = new GoogleAuthProvider();
+
+    const ALLOWED_ADMINS = ["Solarengineeringug@gmail.com"];
+    const WORKER_URL = 'https://solar-engineering-worker.lubegadoreen02.workers.dev';
+    const ADMIN_API_KEY = 'An_daddblhogjfn-47374$$7_ufjfddjddsuwu6494247hdryqsud';
+
+    let currentUser = null;
+
+    // ── DOM Elements ──
+    const loginSection = document.getElementById('loginSection');
+    const dashboardSection = document.getElementById('dashboardSection');
+    const adminHeader = document.getElementById('adminHeader');
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginError = document.getElementById('loginError');
+    const sectionContent = document.getElementById('sectionContent');
+    const adminDropdownBtn = document.getElementById('adminDropdownBtn');
+    const adminMenu = document.getElementById('adminMenu');
+    const themeToggle = document.getElementById('themeToggle');
+
+    let currentSection = 'products';
+
+    // ── Auth ──
+    onAuthStateChanged(auth, (user) => {
+      if (user && ALLOWED_ADMINS.includes(user.email)) {
+        currentUser = user;
+        loginSection.classList.add('hidden');
+        dashboardSection.classList.remove('hidden');
+        adminHeader.classList.remove('hidden');
+        showSection('products');
+      } else {
+        currentUser = null;
+        loginSection.classList.remove('hidden');
+        dashboardSection.classList.add('hidden');
+        adminHeader.classList.add('hidden');
+        if (user) {
+          loginError.textContent = `Access denied for ${user.email}.`;
+          loginError.classList.remove('hidden');
+          signOut(auth);
+        }
+      }
+    });
+
+    googleLoginBtn.addEventListener('click', async () => {
+      loginError.classList.add('hidden');
+      try { await signInWithPopup(auth, provider); }
+      catch (error) {
+        loginError.textContent = error.message;
+        loginError.classList.remove('hidden');
+      }
+    });
+
+    logoutBtn.addEventListener('click', () => signOut(auth));
+
+    // ── Dropdown ──
+    adminDropdownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      adminDropdownBtn.classList.toggle('open');
+      adminMenu.classList.toggle('open');
+    });
+    document.addEventListener('click', (e) => {
+      if (!adminDropdownBtn.contains(e.target) && !adminMenu.contains(e.target)) {
+        adminDropdownBtn.classList.remove('open');
+        adminMenu.classList.remove('open');
+      }
+    });
+    adminMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        adminDropdownBtn.classList.remove('open');
+        adminMenu.classList.remove('open');
+        showSection(link.dataset.section);
+      });
+    });
+
+    // ── Theme Toggle ──
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      const icon = themeToggle.querySelector('i');
+      if (document.body.classList.contains('dark')) {
+        icon.className = 'fas fa-sun';
+      } else {
+        icon.className = 'fas fa-moon';
+      }
+    });
+
+    // ── Section Loader ──
+    async function showSection(section) {
+      currentSection = section;
+      adminMenu.querySelectorAll('a').forEach(a => a.classList.toggle('active', a.dataset.section === section));
+      sectionContent.innerHTML = '<div class="progress-bar active"><div></div></div><p>Loading...</p>';
+      try {
+        switch (section) {
+          case 'products': await renderProducts(); break;
+          case 'blogs': await renderBlogs(); break;
+          case 'cases': await renderCases(); break;
+          case 'testimonials': await renderTestimonials(); break;
+          case 'team': await renderTeam(); break;
+          case 'certifications': await renderCertifications(); break;
+          case 'messages': await renderMessages(); break;
+          default: sectionContent.innerHTML = '<p>Section not found.</p>';
+        }
+      } catch (e) {
+        sectionContent.innerHTML = `<p style="color:#d93025;">Error loading section: ${e.message}</p>`;
+      }
+    }
+
+    // ── Helper: load collection ──
+    async function loadCollection(collectionName, cardFn) {
+      const q = query(collection(db, collectionName), orderBy('createdAt', 'desc'));
+      const snap = await getDocs(q);
+      if (snap.empty) return '<p>No items yet.</p>';
+      let html = '';
+      snap.forEach(doc => {
+        const data = doc.data();
+        data.id = doc.id;
+        html += cardFn(data);
+      });
+      return html;
+    }
+
+    // ── Products ──
+    async function renderProducts() {
+      let html = `<h3>Manage Products</h3>
+        <div class="grid-2">
+          <div><input id="prodTitle" placeholder="Product title"></div>
+          <div>
+            <select id="prodCategory">
+              <option>Solar System Design & Installation</option>
+              <option>Lithium Battery & Inverter Installation</option>
+              <option>Solar Panel Supply & Mounting</option>
+              <option>Solar Water Pumping Systems</option>
+              <option>Solar Street Lighting</option>
+              <option>Backup Power Systems</option>
+              <option>Maintenance & Troubleshooting</option>
+              <option>Tubular-to-Lithium Battery Upgrades</option>
+              <option>Energy Audits & Technical Consultations</option>
+            </select>
+          </div>
+        </div>
+        <textarea id="prodDesc" rows="3" placeholder="Description"></textarea>
+        <input id="prodPrice" placeholder="Price (or 'Get Quote')">
+        <label><i class="fas fa-image"></i> Image</label>
+        <input type="file" id="prodImage" accept="image/*">
+        <button id="addProductBtn" class="btn"><i class="fas fa-plus"></i> Add Product</button>
+        <div class="progress-bar" id="prodProgress"><div></div></div>
+        <div id="prodStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="margin:24px 0; border-color:var(--gray-200);">
+        <div id="productsList" class="grid-3"></div>`;
+
+      sectionContent.innerHTML = html;
+      document.getElementById('productsList').innerHTML = await loadCollection('solar_products', productCard);
+
+      document.getElementById('addProductBtn').addEventListener('click', async () => {
+        const title = document.getElementById('prodTitle').value.trim();
+        const category = document.getElementById('prodCategory').value;
+        const description = document.getElementById('prodDesc').value.trim();
+        const price = document.getElementById('prodPrice').value.trim();
+        const imageFile = document.getElementById('prodImage').files[0];
+        if (!title || !imageFile) {
+          showStatus('prodStatus', 'Title and image are required.', 'error');
+          return;
+        }
+
+        const progress = document.getElementById('prodProgress');
+        progress.classList.add('active');
+        document.getElementById('addProductBtn').disabled = true;
+
+        try {
+          const formData = new FormData();
+          formData.append('file', imageFile);
+          const uploadRes = await fetch(`${WORKER_URL}/upload`, {
+            method: 'POST',
+            headers: { 'X-API-Key': ADMIN_API_KEY },
+            body: formData
+          });
+          const uploadJson = await uploadRes.json();
+          if (!uploadJson.success) throw new Error(uploadJson.error);
+          const imageUrl = uploadJson.url;
+
+          await addDoc(collection(db, 'solar_products'), {
+            title, category, description, price, image: imageUrl,
+            createdAt: serverTimestamp()
+          });
+          showStatus('prodStatus', 'Product added!', 'success');
+          document.getElementById('prodTitle').value = '';
+          document.getElementById('prodDesc').value = '';
+          document.getElementById('prodPrice').value = '';
+          document.getElementById('prodImage').value = '';
+          document.getElementById('productsList').innerHTML = await loadCollection('solar_products', productCard);
+        } catch (e) {
+          showStatus('prodStatus', e.message, 'error');
+        } finally {
+          progress.classList.remove('active');
+          document.getElementById('addProductBtn').disabled = false;
+        }
+      });
+    }
+
+    function productCard(item) {
+      return `<div class="item-card">
+        <img src="${item.image}" alt="${item.title}">
+        <strong>${item.title}</strong>
+        <p style="font-size:0.85rem;color:var(--text-muted);">${item.category || ''}</p>
+        <p>${item.price || 'Get Quote'}</p>
+        <div class="item-actions">
+          <button class="btn-outline btn-small" onclick="deleteItem('solar_products','${item.id}')"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>`;
+    }
+
+    // ── Blogs ──
+    async function renderBlogs() {
+      let html = `<h3>Manage Blog Posts</h3>
+        <input id="blogTitle" placeholder="Title">
+        <textarea id="blogBody" rows="6" placeholder="Content..."></textarea>
+        <button id="addBlogBtn" class="btn"><i class="fas fa-plus"></i> Add Post</button>
+        <div class="progress-bar" id="blogProgress"><div></div></div>
+        <div id="blogStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="border-color:var(--gray-200);">
+        <div id="blogsList"></div>`;
+      sectionContent.innerHTML = html;
+      document.getElementById('blogsList').innerHTML = await loadCollection('blogs', blogCard);
+
+      document.getElementById('addBlogBtn').addEventListener('click', async () => {
+        const title = document.getElementById('blogTitle').value.trim();
+        const body = document.getElementById('blogBody').value.trim();
+        if (!title || !body) {
+          showStatus('blogStatus', 'Title and body required.', 'error');
+          return;
+        }
+        document.getElementById('addBlogBtn').disabled = true;
+        document.getElementById('blogProgress').classList.add('active');
+        try {
+          await addDoc(collection(db, 'blogs'), { title, body, timestamp: serverTimestamp() });
+          showStatus('blogStatus', 'Post added!', 'success');
+          document.getElementById('blogTitle').value = '';
+          document.getElementById('blogBody').value = '';
+          document.getElementById('blogsList').innerHTML = await loadCollection('blogs', blogCard);
+        } catch (e) {
+          showStatus('blogStatus', e.message, 'error');
+        } finally {
+          document.getElementById('addBlogBtn').disabled = false;
+          document.getElementById('blogProgress').classList.remove('active');
+        }
+      });
+    }
+
+    function blogCard(item) {
+      return `<div class="item-card">
+        <strong>${item.title}</strong>
+        <p style="font-size:0.85rem;">${(item.body||'').substring(0,100)}...</p>
+        <button class="btn-outline btn-small" onclick="deleteItem('blogs','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Case Studies ──
+    async function renderCases() {
+      let html = `<h3>Manage Case Studies</h3>
+        <div class="grid-2">
+          <input id="caseTitle" placeholder="Title">
+          <input id="caseClient" placeholder="Client">
+        </div>
+        <input id="caseLocation" placeholder="Location">
+        <textarea id="caseSummary" rows="3" placeholder="Summary"></textarea>
+        <input id="caseResult" placeholder="Result (e.g. 40% savings)">
+        <input id="caseYear" placeholder="Year">
+        <label>Image (optional)</label>
+        <input type="file" id="caseImage" accept="image/*">
+        <button id="addCaseBtn" class="btn"><i class="fas fa-plus"></i> Add Case Study</button>
+        <div class="progress-bar" id="caseProgress"><div></div></div>
+        <div id="caseStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="border-color:var(--gray-200);">
+        <div id="casesList" class="grid-3"></div>`;
+      sectionContent.innerHTML = html;
+      document.getElementById('casesList').innerHTML = await loadCollection('case_studies', caseCard);
+
+      document.getElementById('addCaseBtn').addEventListener('click', async () => {
+        const title = document.getElementById('caseTitle').value.trim();
+        if (!title) { showStatus('caseStatus','Title required.','error'); return; }
+        const caseFile = document.getElementById('caseImage').files[0];
+        document.getElementById('addCaseBtn').disabled = true;
+        document.getElementById('caseProgress').classList.add('active');
+
+        let imageUrl = '';
+        if (caseFile) {
+          const formData = new FormData();
+          formData.append('file', caseFile);
+          const upRes = await fetch(`${WORKER_URL}/upload`, { method:'POST', headers:{'X-API-Key':ADMIN_API_KEY}, body:formData });
+          const upJson = await upRes.json();
+          if (upJson.success) imageUrl = upJson.url;
+        }
+
+        try {
+          await addDoc(collection(db, 'case_studies'), {
+            title,
+            client: document.getElementById('caseClient').value.trim(),
+            location: document.getElementById('caseLocation').value.trim(),
+            summary: document.getElementById('caseSummary').value.trim(),
+            result: document.getElementById('caseResult').value.trim(),
+            year: document.getElementById('caseYear').value.trim(),
+            imageUrl, createdAt: serverTimestamp()
+          });
+          showStatus('caseStatus','Case study added!','success');
+          ['caseTitle','caseClient','caseLocation','caseSummary','caseResult','caseYear'].forEach(id => document.getElementById(id).value='');
+          document.getElementById('caseImage').value='';
+          document.getElementById('casesList').innerHTML = await loadCollection('case_studies', caseCard);
+        } catch (e) {
+          showStatus('caseStatus', e.message, 'error');
+        } finally {
+          document.getElementById('addCaseBtn').disabled = false;
+          document.getElementById('caseProgress').classList.remove('active');
+        }
+      });
+    }
+
+    function caseCard(item) {
+      return `<div class="item-card">
+        ${item.imageUrl ? `<img src="${item.imageUrl}" alt="${item.title}">` : ''}
+        <strong>${item.title}</strong>
+        <p>${item.client || ''} - ${item.location || ''} (${item.year || ''})</p>
+        <button class="btn-outline btn-small" onclick="deleteItem('case_studies','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Testimonials ──
+    async function renderTestimonials() {
+      let html = `<h3>Manage Testimonials</h3>
+        <input id="testiName" placeholder="Client Name">
+        <input id="testiRole" placeholder="Role / Company">
+        <textarea id="testiText" rows="3" placeholder="Testimonial text"></textarea>
+        <input id="testiService" placeholder="Service received">
+        <label>Rating (1-5)</label>
+        <input type="number" id="testiRating" min="1" max="5" value="5">
+        <button id="addTestiBtn" class="btn"><i class="fas fa-plus"></i> Add Testimonial</button>
+        <div id="testiStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="border-color:var(--gray-200);">
+        <div id="testimonialsList"></div>`;
+      sectionContent.innerHTML = html;
+      document.getElementById('testimonialsList').innerHTML = await loadCollection('testimonials', testiCard);
+
+      document.getElementById('addTestiBtn').addEventListener('click', async () => {
+        const name = document.getElementById('testiName').value.trim();
+        const text = document.getElementById('testiText').value.trim();
+        if (!name || !text) { showStatus('testiStatus','Name and text required.','error'); return; }
+        try {
+          await addDoc(collection(db, 'testimonials'), {
+            name,
+            role: document.getElementById('testiRole').value.trim(),
+            text,
+            service: document.getElementById('testiService').value.trim(),
+            rating: parseInt(document.getElementById('testiRating').value) || 5,
+            status: 'approved',
+            createdAt: serverTimestamp()
+          });
+          showStatus('testiStatus','Testimonial added!','success');
+          ['testiName','testiRole','testiText','testiService'].forEach(id => document.getElementById(id).value='');
+          document.getElementById('testimonialsList').innerHTML = await loadCollection('testimonials', testiCard);
+        } catch (e) {
+          showStatus('testiStatus', e.message, 'error');
+        }
+      });
+    }
+
+    function testiCard(item) {
+      return `<div class="item-card">
+        <strong>${item.name}</strong> (${item.role || ''})
+        <p>"${(item.text||'').substring(0,80)}..."</p>
+        <button class="btn-outline btn-small" onclick="deleteItem('testimonials','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Team ──
+    async function renderTeam() {
+      let html = `<h3>Manage Team Members</h3>
+        <input id="teamName" placeholder="Full Name">
+        <input id="teamRole" placeholder="Job Title">
+        <textarea id="teamBio" rows="3" placeholder="Short bio"></textarea>
+        <input id="teamLinkedIn" placeholder="LinkedIn URL (optional)">
+        <label>Photo (optional)</label>
+        <input type="file" id="teamPhoto" accept="image/*">
+        <button id="addTeamBtn" class="btn"><i class="fas fa-plus"></i> Add Member</button>
+        <div class="progress-bar" id="teamProgress"><div></div></div>
+        <div id="teamStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="border-color:var(--gray-200);">
+        <div id="teamList" class="grid-3"></div>`;
+      sectionContent.innerHTML = html;
+      document.getElementById('teamList').innerHTML = await loadCollection('team_members', teamCard);
+
+      document.getElementById('addTeamBtn').addEventListener('click', async () => {
+        const name = document.getElementById('teamName').value.trim();
+        const role = document.getElementById('teamRole').value.trim();
+        if (!name || !role) { showStatus('teamStatus','Name and role required.','error'); return; }
+        const photoFile = document.getElementById('teamPhoto').files[0];
+        document.getElementById('addTeamBtn').disabled = true;
+        document.getElementById('teamProgress').classList.add('active');
+        let photoUrl = '';
+        if (photoFile) {
+          const formData = new FormData();
+          formData.append('file', photoFile);
+          const upRes = await fetch(`${WORKER_URL}/upload`, { method:'POST', headers:{'X-API-Key':ADMIN_API_KEY}, body:formData });
+          const upJson = await upRes.json();
+          if (upJson.success) photoUrl = upJson.url;
+        }
+        try {
+          await addDoc(collection(db, 'team_members'), {
+            name, role,
+            bio: document.getElementById('teamBio').value.trim(),
+            linkedIn: document.getElementById('teamLinkedIn').value.trim(),
+            photoUrl, createdAt: serverTimestamp()
+          });
+          showStatus('teamStatus','Team member added!','success');
+          ['teamName','teamRole','teamBio','teamLinkedIn'].forEach(id => document.getElementById(id).value='');
+          document.getElementById('teamPhoto').value='';
+          document.getElementById('teamList').innerHTML = await loadCollection('team_members', teamCard);
+        } catch (e) {
+          showStatus('teamStatus', e.message, 'error');
+        } finally {
+          document.getElementById('addTeamBtn').disabled = false;
+          document.getElementById('teamProgress').classList.remove('active');
+        }
+      });
+    }
+
+    function teamCard(item) {
+      return `<div class="item-card" style="text-align:center;">
+        ${item.photoUrl ? `<img src="${item.photoUrl}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto;">` : `<div style="width:80px;height:80px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto;font-size:1.5rem;">${(item.name||'?').split(' ').map(n=>n[0]).join('').substring(0,2).toUpperCase()}</div>`}
+        <strong>${item.name}</strong>
+        <p>${item.role}</p>
+        <button class="btn-outline btn-small" onclick="deleteItem('team_members','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Certifications ──
+    async function renderCertifications() {
+      let html = `<h3>Manage Certifications</h3>
+        <input id="certTitle" placeholder="Certification name">
+        <label>Badge image (optional)</label>
+        <input type="file" id="certImage" accept="image/*">
+        <button id="addCertBtn" class="btn"><i class="fas fa-plus"></i> Add</button>
+        <div class="progress-bar" id="certProgress"><div></div></div>
+        <div id="certStatus" class="hidden" style="margin-top:12px;"></div>
+        <hr style="border-color:var(--gray-200);">
+        <div id="certsList"></div>`;
+      sectionContent.innerHTML = html;
+      document.getElementById('certsList').innerHTML = await loadCollection('certifications', certCard);
+
+      document.getElementById('addCertBtn').addEventListener('click', async () => {
+        const title = document.getElementById('certTitle').value.trim();
+        if (!title) { showStatus('certStatus','Title required.','error'); return; }
+        const certFile = document.getElementById('certImage').files[0];
+        document.getElementById('addCertBtn').disabled = true;
+        document.getElementById('certProgress').classList.add('active');
+        let imageUrl = '';
+        if (certFile) {
+          const formData = new FormData();
+          formData.append('file', certFile);
+          const upRes = await fetch(`${WORKER_URL}/upload`, { method:'POST', headers:{'X-API-Key':ADMIN_API_KEY}, body:formData });
+          const upJson = await upRes.json();
+          if (upJson.success) imageUrl = upJson.url;
+        }
+        try {
+          await addDoc(collection(db, 'certifications'), { title, imageUrl, createdAt: serverTimestamp() });
+          showStatus('certStatus','Certification added!','success');
+          document.getElementById('certTitle').value='';
+          document.getElementById('certImage').value='';
+          document.getElementById('certsList').innerHTML = await loadCollection('certifications', certCard);
+        } catch (e) {
+          showStatus('certStatus', e.message, 'error');
+        } finally {
+          document.getElementById('addCertBtn').disabled = false;
+          document.getElementById('certProgress').classList.remove('active');
+        }
+      });
+    }
+
+    function certCard(item) {
+      return `<div class="item-card" style="display:flex;align-items:center;gap:12px;">
+        ${item.imageUrl ? `<img src="${item.imageUrl}" style="height:36px;">` : '<i class="fas fa-certificate" style="color:var(--green);"></i>'}
+        <span>${item.title}</span>
+        <button class="btn-outline btn-small" style="margin-left:auto;" onclick="deleteItem('certifications','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Messages ──
+    async function renderMessages() {
+      sectionContent.innerHTML = `<h3>Contact Messages</h3><div id="messagesList"></div>`;
+      document.getElementById('messagesList').innerHTML = await loadCollection('contact_messages', msgCard);
+    }
+
+    function msgCard(item) {
+      return `<div class="item-card">
+        <strong>${item.name}</strong> (${item.email || 'no email'}) – ${item.phone || ''}
+        <p style="white-space:pre-wrap;">${item.message}</p>
+        <small>${item.createdAt?.toDate ? item.createdAt.toDate().toLocaleString() : ''}</small>
+        <button class="btn-outline btn-small" onclick="deleteItem('contact_messages','${item.id}')"><i class="fas fa-trash"></i></button>
+      </div>`;
+    }
+
+    // ── Global delete ──
+    window.deleteItem = async (collectionName, docId) => {
+      if (confirm('Delete this item?')) {
+        await deleteDoc(doc(db, collectionName, docId));
+        showSection(currentSection);
+      }
+    };
+
+    // ── Status helper ──
+    function showStatus(elementId, message, type) {
+      const el = document.getElementById(elementId);
+      el.textContent = message;
+      el.className = type === 'success' ? 'status-success' : 'status-error';
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 4000);
+    }
+  </script>
+</body>
+</html>
