@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Contact Us — Solar Engineering Uganda | Kampala</title>
+  <meta name="description" content="Contact Solar Engineering Uganda — get a free quote for solar installation, battery storage, CCTV & security systems. Call +256 708 755 776.">
+  <link rel="canonical" href="https://solarengineeringuganda.com/contact.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://solarengineeringuganda.com/contact.html">
+  <meta property="og:title" content="Contact Solar Engineering Uganda">
+  <meta property="og:description" content="Get in touch for solar power, battery storage & CCTV systems in Kampala.">
+  <meta property="og:image" content="https://solarengineeringuganda.com/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --green: #1e8f3e;
+      --green-dark: #146b2e;
+      --orange: #f7941d;
+      --orange-dark: #d97e0a;
+      --black: #0a0f0a;
+      --white: #ffffff;
+      --gray-100: #f5f5f5;
+      --gray-200: #e8e8e8;
+      --gray-400: #9e9e9e;
+      --text: #1a1a1a;
+      --text-muted: #5f6368;
+      --shadow: 0 2px 12px rgba(0,0,0,0.08);
+      --shadow-lg: 0 8px 32px rgba(0,0,0,0.14);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      color: var(--text);
+      background: var(--white);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, .logo-text, .footer-logo {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      line-height: 1.1;
+    }
+
+    .container { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 24px; }
+
+    /* HEADER */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      gap: 20px;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+    .logo img { height: 44px; width: auto; }
+    .logo-text {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--green);
+      letter-spacing: 1px;
+      line-height: 1;
+      font-family: 'Baloo 2', cursive;
+    }
+    .logo-text span { color: var(--orange); }
+
+    nav { display: flex; align-items: center; gap: 28px; }
+    nav a {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.3px;
+      position: relative;
+      padding-bottom: 3px;
+      transition: color 0.2s;
+      white-space: nowrap;
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--green);
+      transition: width 0.3s;
+    }
+    nav a:hover { color: var(--green); }
+    nav a:hover::after { width: 100%; }
+    nav a.active { color: var(--green); }
+    nav a.active::after { width: 100%; }
+
+    .mobile-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--green);
+      cursor: pointer;
+      padding: 4px;
+    }
+    .mobile-drawer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: var(--white);
+      z-index: 1999;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(-100%);
+      transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+      overflow: hidden;
+      padding: 0 0 20px 0;
+    }
+    .mobile-drawer.open { transform: translateY(0); }
+    .mobile-close {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--green);
+      cursor: pointer;
+      z-index: 1;
+    }
+    .mobile-nav {
+      list-style: none;
+      margin-top: 70px;
+      padding: 0 30px;
+    }
+    .mobile-nav li a {
+      display: block;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gray-200);
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text);
+      text-decoration: none;
+      transition: color 0.2s, padding-left 0.2s;
+    }
+    .mobile-nav li a:hover { color: var(--green); padding-left: 8px; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 80px 0 60px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(20,107,46,0.94) 0%, rgba(247,148,29,0.85) 100%),
+                  url('https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1600&q=80');
+      background-size: cover;
+      background-position: center;
+      color: var(--white);
+    }
+    .page-header h1 {
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      margin-bottom: 16px;
+      font-family: 'Baloo 2', cursive;
+    }
+    .page-header p {
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.85);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* CONTACT SECTION */
+    .contact-section {
+      padding: 80px 0;
+      background: var(--white);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* Info cards */
+    .contact-info-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .info-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 24px;
+      border: 1px solid var(--gray-200);
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .info-card:hover {
+      border-color: var(--green);
+      box-shadow: var(--shadow);
+    }
+    .info-icon-circle {
+      width: 48px;
+      height: 48px;
+      background: rgba(30,143,62,0.1);
+      color: var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .info-details strong {
+      display: block;
+      font-family: 'Baloo 2', cursive;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    .info-details span, .info-details a {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      line-height: 1.5;
+    }
+    .info-details a:hover { color: var(--green); }
+
+    /* Form */
+    .form-card {
+      border: 1px solid var(--gray-200);
+      padding: 36px;
+      background: var(--white);
+      box-shadow: var(--shadow);
+    }
+    .form-card h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-card h2 i { color: var(--orange); }
+    .form-field { margin-bottom: 16px; }
+    .form-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .form-field label span { color: #e53e3e; }
+    .form-field input, .form-field select, .form-field textarea {
+      width: 100%;
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      color: var(--text);
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-field input:focus, .form-field select:focus, .form-field textarea:focus {
+      border-color: var(--green);
+    }
+    .form-field textarea { resize: vertical; min-height: 120px; }
+    .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 14px 24px;
+      background: var(--green);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn-submit:hover { background: var(--green-dark); }
+    .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    .form-status {
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      margin-top: 12px;
+      display: none;
+      border-radius: 4px;
+    }
+    .form-status.show { display: block; }
+    .form-status.success { background: #e7f4ec; color: var(--green-dark); border: 1px solid rgba(30,143,62,0.2); }
+    .form-status.error   { background: #fdecea; color: #c0392b; border: 1px solid rgba(192,57,43,0.15); }
+    .form-spinner {
+      display: inline-block;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.2);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.65s linear infinite;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* CTA BANNER */
+    .cta-strip { background: var(--black); padding: 40px 0; }
+    .cta-strip-inner { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .cta-strip p { color: rgba(255,255,255,0.7); font-size: 1rem; font-weight: 500; }
+    .btn-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+    .btn-cta-green  { background: var(--green);  color: #fff; }
+    .btn-cta-orange { background: var(--orange); color: #fff; }
+    .btn-cta-outline { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.3); }
+    .btn-cta-green:hover  { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-cta-orange:hover { background: var(--orange-dark); transform: translateY(-1px); }
+    .btn-cta-outline:hover { border-color: #fff; }
+
+    /* FOOTER */
+    footer { background: var(--black); color: var(--white); padding: 64px 0 32px; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px; }
+    .footer-col h4 { font-size: 0.76rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer-col p { font-size: 0.88rem; color: rgba(255,255,255,0.55); line-height: 1.75; }
+    .footer-col a { display: block; font-size: 0.88rem; color: rgba(255,255,255,0.55); text-decoration: none; margin-bottom: 10px; transition: color 0.2s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-contact-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; font-size: 0.86rem; color: rgba(255,255,255,0.55); }
+    .footer-contact-row i { color: var(--green); margin-top: 2px; flex-shrink: 0; }
+    .footer-bottom { padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.07); text-align: center; font-size: 0.8rem; color: rgba(255,255,255,0.28); }
+    .footer-logo { font-family: 'Baloo 2', cursive; font-size: 1.6rem; font-weight: 800; color: var(--white); letter-spacing: 1px; margin-bottom: 14px; display: block; }
+    .footer-logo span { color: var(--orange); }
+    .storyset-attribution {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: inherit;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .storyset-attribution:hover { color: var(--green); }
+    .storyset-attribution img { height: 18px; width: auto; }
+
+    /* WHATSAPP */
+    .whatsapp-float { position: fixed; bottom: 80px; right: 24px; width: 54px; height: 54px; background: #25d366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; text-decoration: none; box-shadow: 0 4px 16px rgba(37,211,102,0.4); z-index: 490; transition: transform 0.2s, box-shadow 0.2s; }
+    .whatsapp-float:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(37,211,102,0.5); }
+
+    /* RESPONSIVE */
+    @media (max-width: 1024px) {
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      nav { display: none; }
+      .mobile-btn { display: block; }
+      .contact-grid { grid-template-columns: 1fr; }
+      .form-grid-2 { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; gap: 28px; }
+      .cta-strip-inner { flex-direction: column; text-align: center; }
+      .page-header { padding: 60px 0 40px; }
+    }
+    @media (max-width: 480px) {
+      .info-card { flex-direction: column; align-items: center; text-align: center; }
+      .contact-section { padding: 50px 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- WHATSAPP FLOAT -->
+<a class="whatsapp-float" href="https://wa.me/256708755776?text=Hello%20Solar%20Engineering%20Uganda%2C%20I%20would%20like%20a%20quote." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- HEADER -->
+<header>
+  <div class="container">
+    <div class="header-inner">
+      <div class="header-left">
+        <a href="index.html" class="logo">
+          <img src="logo.png" alt="Solar Engineering Uganda">
+          <span class="logo-text">SOLAR <span>ENGINEERING</span></span>
+        </a>
+      </div>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#gallery">Projects</a>
+        <a href="contact.html" class="active">Contact</a>
+      </nav>
+      <button class="mobile-btn" id="mobileOpen" aria-label="Open menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <button class="mobile-close" id="mobileClose"><i class="fas fa-times"></i></button>
+  <ul class="mobile-nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#services">Services</a></li>
+    <li><a href="index.html#gallery">Projects</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+</div>
+
+<!-- PAGE HEADER -->
+<section class="page-header">
+  <div class="container">
+    <h1>Contact Us</h1>
+    <p>Get a free quote or ask a question. We reply within 24 hours.</p>
+  </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- INFO CARDS -->
+      <div class="contact-info-cards">
+        <div class="info-card">
+          <div class="info-icon-circle"><i class="fas fa-map-marker-alt"></i></div>
+          <div class="info-details">
+            <strong>Office</strong>
+            <span>Anna Power Point Building, Nakasero Market Street, Kampala</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon-circle"><i class="fas fa-phone-alt"></i></div>
+          <div class="info-details">
+            <strong>Phone</strong>
+            <a href="tel:+256708755776">+256 708 755 776</a><br>
+            <a href="tel:+256771557508">+256 771 557 508</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon-circle"><i class="fas fa-envelope"></i></div>
+          <div class="info-details">
+            <strong>Email</strong>
+            <a href="mailto:Solarengineeringug@gmail.com">Solarengineeringug@gmail.com</a>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon-circle"><i class="fas fa-clock"></i></div>
+          <div class="info-details">
+            <strong>Hours</strong>
+            <span>Monday – Saturday: 8:00 AM – 7:00 PM</span>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon-circle" style="background: rgba(37,211,102,0.15); color: #25d366;">
+            <i class="fab fa-whatsapp"></i>
+          </div>
+          <div class="info-details">
+            <strong>WhatsApp</strong>
+            <a href="https://wa.me/256708755776" target="_blank">+256 708 755 776</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="form-card">
+        <h2><i class="fas fa-paper-plane"></i> Send Us a Message</h2>
+
+        <div class="form-grid-2">
+          <div class="form-field">
+            <label>Full Name <span>*</span></label>
+            <input type="text" id="cName" placeholder="Your full name">
+          </div>
+          <div class="form-field">
+            <label>Phone Number <span>*</span></label>
+            <input type="tel" id="cPhone" placeholder="+256 7XX XXX XXX">
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label>Email Address (optional)</label>
+          <input type="email" id="cEmail" placeholder="your@email.com">
+        </div>
+
+        <div class="form-field">
+          <label>Service Needed</label>
+          <select id="cService">
+            <option value="">Select a service…</option>
+            <option>Solar System Design & Installation</option>
+            <option>Lithium Battery & Inverter Installation</option>
+            <option>Solar Panel Supply & Mounting</option>
+            <option>Solar Water Pumping Systems</option>
+            <option>Solar Street Lighting</option>
+            <option>CCTV & Security Systems</option>
+            <option>Backup Power Systems</option>
+            <option>Maintenance & Troubleshooting</option>
+            <option>Tubular-to-Lithium Battery Upgrades</option>
+            <option>Energy Audits & Technical Consultations</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label>Location / Area (optional)</label>
+          <input type="text" id="cLocation" placeholder="e.g. Ntinda, Kampala">
+        </div>
+
+        <div class="form-field">
+          <label>Message <span>*</span></label>
+          <textarea id="cMessage" placeholder="Tell us about your project, power needs, or questions…"></textarea>
+        </div>
+
+        <button class="btn-submit" id="submitContactBtn">
+          <i class="fas fa-paper-plane"></i> Send Message
+        </button>
+
+        <div class="form-status" id="cStatus"></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="container">
+    <div class="cta-strip-inner">
+      <p>Prefer to call? Our engineers are available Mon–Sat, 8 AM – 7 PM.</p>
+      <a href="tel:+256708755776" class="btn-cta btn-cta-green">
+        <i class="fas fa-phone-alt"></i> +256 708 755 776
+      </a>
+      <a href="https://wa.me/256708755776" target="_blank" class="btn-cta btn-cta-outline">
+        <i class="fab fa-whatsapp"></i> WhatsApp Us
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-logo">SOLAR <span>ENGINEERING</span></span>
+        <p>Reliable, affordable, and sustainable solar energy solutions for homes, businesses, farms, schools, and industry across Uganda.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigation</h4>
+        <a href="index.html">Home</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#gallery">Projects</a>
+        <a href="contact.html">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <a href="index.html#svc-installation">Solar Installation</a>
+        <a href="index.html#svc-battery">Battery Storage</a>
+        <a href="index.html#svc-pumping">Water Pumping</a>
+        <a href="index.html#svc-lighting">Street Lighting</a>
+        <a href="index.html#svc-cctv">CCTV & Security</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <div class="footer-contact-row">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>Anna Power Point Building, Nakasero Market Street, Kampala</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-phone"></i>
+          <span>+256 708 755 776 / +256 771 557 508</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-envelope"></i>
+          <span>Solarengineeringug@gmail.com</span>
+        </div>
+        <div class="footer-contact-row">
+          <i class="fas fa-clock"></i>
+          <span>Mon–Sat: 8:00 AM – 7:00 PM</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>
+        &copy; 2026 Solar Engineering Uganda. All rights reserved. Powering Your Tomorrow — Kampala, Uganda.
+        <br>
+        <a href="https://storyset.com" target="_blank" rel="noopener" class="storyset-attribution">
+          <img src="Security-rafiki.svg" alt=""> Illustrations by Storyset
+        </a>
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── MOBILE MENU ──
+  var mobileOpen   = document.getElementById('mobileOpen');
+  var mobileClose  = document.getElementById('mobileClose');
+  var mobileDrawer = document.getElementById('mobileDrawer');
+
+  function openMenu()  { mobileDrawer.classList.add('open'); }
+  function closeMenu() { mobileDrawer.classList.remove('open'); }
+
+  mobileOpen.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  document.addEventListener('click', function(e) {
+    if (!mobileDrawer.contains(e.target) && !mobileOpen.contains(e.target)) closeMenu();
+  });
+
+  // ── FORM SUBMISSION ──
+  var submitBtn = document.getElementById('submitContactBtn');
+
+  function showStatus(msg, type) {
+    var el = document.getElementById('cStatus');
+    el.textContent = msg;
+    el.className = 'form-status ' + type + ' show';
+    setTimeout(function() { el.classList.remove('show'); }, 6000);
+  }
+
+  submitBtn.addEventListener('click', async function() {
+    var name    = document.getElementById('cName').value.trim();
+    var phone   = document.getElementById('cPhone').value.trim();
+    var message = document.getElementById('cMessage').value.trim();
+    var email   = document.getElementById('cEmail').value.trim();
+    var service = document.getElementById('cService').value;
+    var location = document.getElementById('cLocation').value.trim();
+
+    if (!name || !phone || !message) {
+      showStatus('Please fill in your name, phone number, and message.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending…';
+
+    try {
+      var response = await fetch('https://solar-engineering-worker.lubegadoreen02.workers.dev/mail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          email: email,
+          service: service,
+          location: location,
+          message: message
+        })
+      });
+
+      var result = await response.json();
+
+      if (result.success) {
+        showStatus('Thank you! Your message has been sent. We will contact you within 24 hours.', 'success');
+        document.getElementById('cName').value = '';
+        document.getElementById('cPhone').value = '';
+        document.getElementById('cEmail').value = '';
+        document.getElementById('cService').value = '';
+        document.getElementById('cLocation').value = '';
+        document.getElementById('cMessage').value = '';
+      } else {
+        showStatus('Error: ' + (result.error || 'Something went wrong. Please try again.'), 'error');
+      }
+    } catch (e) {
+      showStatus('Network error. Please check your connection and try again.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Message';
+    }
+  });
+</script>
+
+</body>
+</html>
